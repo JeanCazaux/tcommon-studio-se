@@ -50,7 +50,6 @@ public enum ECoreImage implements IImage {
     FOLDER_WIZ("/icons1/folder_wiz.gif"), //$NON-NLS-1$
 
     BUSINESS_PROCESS_ICON("/icons1/businessProcess.png"), //$NON-NLS-1$
-    BUSINESS_PROCESS_WIZ("/icons1/business_wiz.png"), //$NON-NLS-1$
     PROCESS_ICON("/icons1/process_icon.png"), //$NON-NLS-1$
     PROCESS_ICON_EDITOR("/icons1/process_icon_editor.png"), //$NON-NLS-1$
     PROCESS_WIZ("/icons1/process_wiz.png"), //$NON-NLS-1$
@@ -88,7 +87,6 @@ public enum ECoreImage implements IImage {
     NOTE_MIDDLE_ICON("/icons1/Note_icon24.png"), //$NON-NLS-1$
     NOTE_BIG_ICON("/icons1/Note_icon32.png"), //$NON-NLS-1$
 
-    // SUBROUTINE_ICON("/icons1/subroutine.gif"),
     DOCUMENTATION_ICON("/icons1/documentation.png"), //$NON-NLS-1$
     DOCUMENTATION_SINGLE_ICON("/icons1/Documentation_feuillet.png"), //$NON-NLS-1$
     DOCUMENTATION_WIZ("/icons1/documentation_wiz.png"), //$NON-NLS-1$
@@ -105,7 +103,6 @@ public enum ECoreImage implements IImage {
     METADATA_BRMS_CONNECTION_WIZ("/icons1/rules_wiz.gif"), //$NON-NLS-1$
 
     METADATA_EBCDIC_CONNECTION_ICON("/icons1/copybook.png"), //$NON-NLS-1$
-    METADATA_EBCDIC_CONNECTION_WIZ("/icons1/copybook_wiz.png"), //$NON-NLS-1$
 
     METADATA_MDM_CONNECTION_ICON("/icons1/MDM_16px.png"), //$NON-NLS-1$
     METADATA_MDM_CONNECTION_WIZ("/icons1/talendMDM_wiz.png"), //$NON-NLS-1$
@@ -164,8 +161,7 @@ public enum ECoreImage implements IImage {
     DOC_PDF_OVERLAY("/icons1/docs/doc_pdf_overlay.gif"), //$NON-NLS-1$
     DOC_EXCEL_OVERLAY("/icons1/docs/doc_excel_overlay.gif"), //$NON-NLS-1$
     DOC_WORD_OVERLAY("/icons1/docs/doc_word_overlay.gif"), //$NON-NLS-1$
-    RECYCLE_BIN_OVERLAY("/icons1/recycle_bin_overlay.gif"), //$NON-NLS-1$
-    DELETED_OVERLAY("/icons1/deleted_overlay.gif"), //$NON-NLS-1$
+
     IMPORT_JAR("/icons1/importjar.gif"), //$NON-NLS-1$
     SHARE_LIBS("/icons1/share.png"), //$NON-NLS-1$
     REFERENCED_ICON("/icons1/referenced.png"), //$NON-NLS-1$
@@ -180,7 +176,7 @@ public enum ECoreImage implements IImage {
     TOGGLE_SUBJOB("/icons1/toggleSubjobs.png"), //$NON-NLS-1$
     TOGGLE_SUBJOB_DISABLED("/icons1/toggleSubjobDisabled.png"), //$NON-NLS-1$
 
-    COMPONMENT_ASSIST("/icons1/assist.gif"), //$NON-NLS-1$
+
 
     TRACE_ON("/icons1/trace_on.png"), //$NON-NLS-1$
     TRACE_OFF("/icons1/trace_off.png"), //$NON-NLS-1$
@@ -199,7 +195,7 @@ public enum ECoreImage implements IImage {
     PROGRESSGRAYGEBAR("/icons1/graygeBar.gif"), //$NON-NLS-1$
     TRIANGLE("/icons1/triangle.gif"), // triangle.gif //$NON-NLS-1$
     COMPARE("/icons1/compare.gif"), //$NON-NLS-1$
-    EXCHNAGETAB("/icons/exchangeTab.jpg"), //$NON-NLS-1$
+
     EXCHNAGEIMAGEMISSING("/icons/component_missing.png"), //$NON-NLS-1$
     STATUS_OK("/icons/ok.png"), //$NON-NLS-1$
     MRGREEBAR("/icons1/mrGreeBar.gif"), //$NON-NLS-1$
@@ -207,8 +203,8 @@ public enum ECoreImage implements IImage {
     MRREDUCE("/icons1/reduce.gif"), //$NON-NLS-1$
     MRREDBAR("/icons1/mrRedBar.gif"), //$NON-NLS-1$
     MRGRAYBAR("/icons1/mrGrayBar.gif"), //$NON-NLS-1$
-    CONN_HANDLE("/icons/handle.gif"), //$NON-NLS-1$
-    GREEN_HANDLE("/icons/green_handle.gif"), //$NON-NLS-1$
+
+
 
     TDQ_ANALYSIS_ICON("/icons1/tdq/chart_bar.png"), //$NON-NLS-1$
     TDQ_RULE_ICON("/icons1/tdq/dqrule_red.png"), //$NON-NLS-1$

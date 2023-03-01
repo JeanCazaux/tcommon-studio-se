@@ -34,7 +34,7 @@ public enum EImage implements IImage {
     ADD_ICON("/icons/add.gif"), //$NON-NLS-1$
     ADD_ALL_ICON("/icons/addall.gif"), //$NON-NLS-1$
     MINUS_ICON("/icons/delete.gif"), //$NON-NLS-1$
-    REFRESH_WITH_BGCOLOR_ICON("/icons/refresh_with_bgcolor.gif"), //$NON-NLS-1$
+
     REFRESH_ICON("/icons/refresh.gif"), //$NON-NLS-1$
     EDIT_ICON("/icons/write_obj.gif"), //$NON-NLS-1$
     READ_ICON("/icons/read_obj.gif"), //$NON-NLS-1$
@@ -74,9 +74,9 @@ public enum EImage implements IImage {
     OK("/icons/ok.png"), //$NON-NLS-1$
     UNKNOWN_ICON("/icons/unknown.gif"), //$NON-NLS-1$
 
-    TRUNK_ICON("/icons/trunk.gif"), //$NON-NLS-1$
+
     BRANCHES_ICON("/icons/branches.gif"), //$NON-NLS-1$
-    TAGS_ICON("/icons/tags.gif"), //$NON-NLS-1$
+
     BRANCH_FOLDER_ICON("/icons/newfolder.gif"), //$NON-NLS-1$
 
     ARROWBRANCH_ICON("/icons/arrow_branch.png"),
@@ -122,7 +122,7 @@ public enum EImage implements IImage {
     JOB_ICON("/icons/process_icon.png"), //$NON-NLS-1$
     JOBLET_ICON("/icons/joblet_icon.png"), //$NON-NLS-1$
 
-    MERGE_ICON("/icons/merge.png"), //$NON-NLS-1$
+
 
     BOLD_ICON("/icons/bold.gif"), //$NON-NLS-1$
     ITALIC_ICON("/icons/italic.gif"), //$NON-NLS-1$
@@ -130,7 +130,7 @@ public enum EImage implements IImage {
     FONT_COLOR_ICON("/icons/font_color.gif"), //$NON-NLS-1$
     FILL_COLOR_ICON("/icons/fill_color.gif"), //$NON-NLS-1$
 
-    OPEN_IN_BROWSER("/icons/open.gif"), //$NON-NLS-1$
+
 
     COMPONENT_MISSING("/icons/component_missing.png"), //$NON-NLS-1$
 

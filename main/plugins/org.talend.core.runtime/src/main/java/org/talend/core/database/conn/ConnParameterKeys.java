@@ -366,7 +366,57 @@ public class ConnParameterKeys {
     public static final String CONN_PARA_KEY_DATABRICKS_RUNTIME_VERSION="CONN_PARA_KEY_DATABRICKS_RUNTIME_VERSION";
 
     public static final String CONN_PARA_KEY_DATABRICKS_DBFS_DEP_FOLDER="CONN_PARA_KEY_DATABRICKS_DBFS_DEP_FOLDER";
+    
+    /**kubernetes*/
 
+    public static final String CONN_PARA_KEY_K8S_SUBMIT_MODE="CONN_PARA_KEY_K8S_SUBMIT_MODE";
+    
+    public static final String CONN_PARA_KEY_K8S_MASTER="CONN_PARA_KEY_K8S_MASTER";
+    
+    public static final String CONN_PARA_KEY_K8S_INSTANCES="CONN_PARA_KEY_K8S_INSTANCES";
+    
+    public static final String CONN_PARA_KEY_K8S_REGISTRYSECRET_CHECK="CONN_PARA_KEY_K8S_REGISTRYSECRET_CHECK";
+    
+    public static final String CONN_PARA_KEY_K8S_REGISTRYSECRET="CONN_PARA_KEY_K8S_REGISTRYSECRET";
+    
+    public static final String CONN_PARA_KEY_K8S_IMAGE="CONN_PARA_KEY_K8S_IMAGE";
+    
+    public static final String CONN_PARA_KEY_K8S_NAMESPACE="CONN_PARA_KEY_K8S_NAMESPACE";
+    
+    public static final String CONN_PARA_KEY_K8S_SERVICEACCOUNT="CONN_PARA_KEY_K8S_SERVICEACCOUNT";
+    
+    public static final String CONN_PARA_KEY_K8S_DISTUPLOAD="CONN_PARA_KEY_K8S_DISTUPLOAD";
+    
+    public static final String CONN_PARA_KEY_K8S_S3BUCKET="CONN_PARA_KEY_K8S_S3BUCKET";
+    
+    public static final String CONN_PARA_KEY_K8S_S3FOLDER="CONN_PARA_KEY_K8S_S3FOLDER";
+    
+    public static final String CONN_PARA_KEY_K8S_S3CREDENTIALS="CONN_PARA_KEY_K8S_S3CREDENTIALS";
+    
+    public static final String CONN_PARA_KEY_K8S_S3ACCESSKEY="CONN_PARA_KEY_K8S_S3ACCESSKEY";
+    
+    public static final String CONN_PARA_KEY_K8S_S3SECRETKEY="CONN_PARA_KEY_K8S_S3SECRETKEY";
+    
+    public static final String CONN_PARA_KEY_K8S_BLOBACCOUNT="CONN_PARA_KEY_K8S_BLOBACCOUNT";
+    
+    public static final String CONN_PARA_KEY_K8S_BLOBCONTAINER="CONN_PARA_KEY_K8S_BLOBCONTAINER";
+    
+    public static final String CONN_PARA_KEY_K8S_BLOBSECRETKEY="CONN_PARA_KEY_K8S_BLOBSECRETKEY";
+    
+    public static final String CONN_PARA_KEY_K8S_AZUREACCOUNT="CONN_PARA_KEY_K8S_AZUREACCOUNT";
+    
+    public static final String CONN_PARA_KEY_K8S_AZURECREDENTIALS="CONN_PARA_KEY_K8S_AZURECREDENTIALS";
+    
+    public static final String CONN_PARA_KEY_K8S_AZURECONTAINER="CONN_PARA_KEY_K8S_AZURECONTAINER";
+    
+    public static final String CONN_PARA_KEY_K8S_AZURESECRETKEY="CONN_PARA_KEY_K8S_AZURESECRETKEY";
+    
+    public static final String CONN_PARA_KEY_K8S_AZUREAADKEY="CONN_PARA_KEY_K8S_AZUREAADKEY";
+    
+    public static final String CONN_PARA_KEY_K8S_AZUREAADCLIENTID="CONN_PARA_KEY_K8S_AZUREAADCLIENTID";
+    
+    public static final String CONN_PARA_KEY_K8S_AZUREAADDIRECTORYID="CONN_PARA_KEY_K8S_AZUREAADDIRECTORYID";
+    
     /**
      * Override hadoop configuration
      */

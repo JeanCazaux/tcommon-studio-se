@@ -153,6 +153,52 @@ public enum EHadoopProperties {
     DATABRICKS_TOKEN,
     
     DATABRICKS_DBFS_DEP_FOLDER,
+
+    K8S_SUBMIT_MODE,
+    
+    K8S_MASTER,
+    
+    K8S_INSTANCES,
+    
+    K8S_REGISTRYSECRET,
+    
+    K8S_IMAGE,
+    
+    K8S_NAMESPACE,
+    
+    K8S_SERVICEACCOUNT,
+    
+    K8S_DISTUPLOAD,
+    
+    K8S_S3BUCKET,
+    
+    K8S_S3FOLDER,
+    
+    K8S_S3CREDENTIALS,
+    
+    K8S_S3ACCESSKEY,
+    
+    K8S_S3SECRETKEY,
+    
+    K8S_BLOBACCOUNT,
+    
+    K8S_BLOBCONTAINER,
+    
+    K8S_BLOBSECRETKEY,
+    
+    K8S_AZUREACCOUNT,
+    
+    K8S_AZURECREDENTIALS,
+    
+    K8S_AZURECONTAINER,
+    
+    K8S_AZURESECRETKEY,
+    
+    K8S_AZUREAADKEY,
+    
+    K8S_AZUREAADCLIENTID,
+    
+    K8S_AZUREAADDIRECTORYID,
     
     DATABRICKS_NODE_TYPE,
     

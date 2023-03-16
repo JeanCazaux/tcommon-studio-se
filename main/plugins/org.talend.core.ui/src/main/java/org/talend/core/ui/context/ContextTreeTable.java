@@ -59,6 +59,7 @@ import org.eclipse.nebula.widgets.nattable.hideshow.RowHideShowLayer;
 import org.eclipse.nebula.widgets.nattable.hideshow.command.ColumnHideCommand;
 import org.eclipse.nebula.widgets.nattable.layer.DataLayer;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ColumnOverrideLabelAccumulator;
+import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.layer.config.DefaultColumnHeaderStyleConfiguration;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.layer.NatGridLayerPainter;
@@ -111,6 +112,7 @@ import org.talend.core.ui.context.nattableTree.ContextNatTableStyleConfiguration
 import org.talend.core.ui.context.nattableTree.ContextNatTableUtils;
 import org.talend.core.ui.context.nattableTree.ContextParaModeChangeMenuConfiguration;
 import org.talend.core.ui.context.nattableTree.ContextRowDataListFixture;
+import org.talend.core.ui.context.nattableTree.ContextValueLabelAccumulator;
 import org.talend.core.ui.context.nattableTree.ExtendedContextColumnPropertyAccessor;
 import org.talend.core.ui.i18n.Messages;
 import org.talend.repository.ProjectManager;
@@ -272,7 +274,7 @@ public class ContextTreeTable {
             final GridLayer gridLayer = new GridLayer(viewportLayer, sortHeaderLayer, rowHeaderLayer, cornerLayer);
 
             // config the column edit configuration
-            ColumnOverrideLabelAccumulator labelAccumulator = new ColumnOverrideLabelAccumulator(bodyDataLayer);
+            ContextValueLabelAccumulator labelAccumulator = new ContextValueLabelAccumulator(bodyDataLayer, bodyDataProvider, manager.getContextManager(), columnGroupModel);
             bodyDataLayer.setConfigLabelAccumulator(labelAccumulator);
             registerColumnLabels(labelAccumulator, ContextRowDataListFixture.getContexts(manager.getContextManager()));
 
@@ -804,12 +806,32 @@ public class ContextTreeTable {
             if (cellValue instanceof Boolean) {
                 return new Point(col, row);
             }
+            ILayerCell cell = this.nt.getCellByPosition(col, row);
+            if (cell != null && cell.getConfigLabels() != null
+                    && cell.getConfigLabels().contains(ContextTableConstants.LABEL_VALUE_NOT_MATCH_TYPE)
+                    && cell.getConfigLabels().contains(ContextTableConstants.COLUMN_CONTEXT_VALUE)) {
+                return new Point(col, row);
+            }
             return null;
         }
 
         @Override
         protected String getText(Event event) {
-            return Messages.getString("ContextTreeTable.PromptToolTips"); //$NON-NLS-1$
+            int col = this.nt.getColumnPositionByX(event.x);
+            int row = this.nt.getRowPositionByY(event.y);
+
+            Object cellValue = this.nt.getDataValueByPosition(col, row);
+
+            if (cellValue instanceof Boolean) {
+                return Messages.getString("ContextTreeTable.PromptToolTips");
+            }
+            ILayerCell cell = this.nt.getCellByPosition(col, row);
+            if (cell != null && cell.getConfigLabels() != null
+                    && cell.getConfigLabels().contains(ContextTableConstants.LABEL_VALUE_NOT_MATCH_TYPE)
+                    && cell.getConfigLabels().contains(ContextTableConstants.COLUMN_CONTEXT_VALUE)) {
+                return Messages.getString("ContextValidator.ParameterValueNotMatch");
+            }
+            return null;
         }
 
         @Override

@@ -12,9 +12,17 @@
 // ============================================================================
 package org.talend.core.ui.context.nattableTree;
 
+import org.eclipse.nebula.widgets.nattable.edit.EditConfigAttributes;
+import org.eclipse.nebula.widgets.nattable.edit.config.RenderErrorHandling;
 import org.eclipse.nebula.widgets.nattable.edit.editor.AbstractCellEditor;
+import org.eclipse.nebula.widgets.nattable.edit.editor.ControlDecorationProvider;
+import org.eclipse.nebula.widgets.nattable.edit.editor.IEditErrorHandler;
 import org.eclipse.nebula.widgets.nattable.selection.SelectionLayer.MoveDirectionEnum;
+import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
+import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.style.IStyle;
+import org.eclipse.nebula.widgets.nattable.style.Style;
+import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.nebula.widgets.nattable.widget.EditModeEnum;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
@@ -52,6 +60,18 @@ public class CustomTextCellEditor extends AbstractCellEditor {
      * if password, the value will be * always. should find out the real value.
      */
     private Object recordOriginalCanonicalValue;
+    
+    protected final ControlDecorationProvider decorationProvider = new ControlDecorationProvider();
+
+    /**
+     * The {@link IEditErrorHandler} that is used for showing conversion errors
+     * on typing into this editor. By default this is the
+     * {@link RenderErrorHandling} which will render the content in the editor
+     * red to indicate a conversion error.
+     */
+    private IEditErrorHandler inputConversionErrorHandler = new RenderErrorHandling(this.decorationProvider);
+    
+    private IEditErrorHandler inputValidationErrorHandler = new RenderErrorHandling(this.decorationProvider);
 
     public CustomTextCellEditor(IContextParameter realPara, IStyle cellStyle, boolean commitOnUpDown, boolean moveSelectionOnEnter) {
         this.realPara = realPara;
@@ -106,9 +126,26 @@ public class CustomTextCellEditor extends AbstractCellEditor {
                     }
                 }
             }
-
+            @Override
+            public void keyReleased(KeyEvent e) {
+                try {
+                    // always do the conversion
+                    Object canonicalValue = getCanonicalValue(CustomTextCellEditor.this.inputConversionErrorHandler);
+                    // and always do the validation, even if for committing the
+                    // validation should be skipped, on editing
+                    // a validation failure should be made visible
+                    // otherwise there would be no need for validation!
+                    validateCanonicalValue(canonicalValue, CustomTextCellEditor.this.inputValidationErrorHandler);
+                } catch (Exception ex) {
+                    // do nothing as exceptions caused by conversion or
+                    // validation are handled already we just need this catch
+                    // block for stopping the process if conversion failed with
+                    // an exception
+                }
+            }
         });
 
+        
         // text.addFocusListener(new FocusAdapter() {
         //
         // @Override
@@ -164,6 +201,30 @@ public class CustomTextCellEditor extends AbstractCellEditor {
         }
 
         this.buttonText = (ContextValuesNatText) createEditorControl(parentComp);
+        if (this.inputConversionErrorHandler instanceof RenderErrorHandling) {
+            IStyle conversionErrorStyle = this.configRegistry.getConfigAttribute(
+                    EditConfigAttributes.CONVERSION_ERROR_STYLE,
+                    DisplayMode.EDIT,
+                    this.labelStack);
+
+            ((RenderErrorHandling) this.inputConversionErrorHandler).setErrorStyle(conversionErrorStyle);
+        }
+
+        if (this.inputValidationErrorHandler instanceof RenderErrorHandling) {
+            IStyle validationErrorStyle = this.configRegistry.getConfigAttribute(
+                    EditConfigAttributes.VALIDATION_ERROR_STYLE,
+                    DisplayMode.EDIT,
+                    this.labelStack);
+
+            if (validationErrorStyle == null) {
+                validationErrorStyle = new Style();
+                validationErrorStyle.setAttributeValue(
+                        CellStyleAttributes.FOREGROUND_COLOR,
+                        GUIHelper.COLOR_RED);
+            }
+
+            ((RenderErrorHandling) this.inputValidationErrorHandler).setErrorStyle(validationErrorStyle);
+        }
         // use the real value.
         setCanonicalValue(this.recordOriginalCanonicalValue);
 
@@ -194,4 +255,24 @@ public class CustomTextCellEditor extends AbstractCellEditor {
         this.freeEdit = freeEdit;
     }
 
+    
+    public IEditErrorHandler getInputConversionErrorHandler() {
+        return inputConversionErrorHandler;
+    }
+
+    
+    public void setInputConversionErrorHandler(IEditErrorHandler inputConversionErrorHandler) {
+        this.inputConversionErrorHandler = inputConversionErrorHandler;
+    }
+
+    
+    public IEditErrorHandler getInputValidationErrorHandler() {
+        return inputValidationErrorHandler;
+    }
+
+    
+    public void setInputValidationErrorHandler(IEditErrorHandler inputValidationErrorHandler) {
+        this.inputValidationErrorHandler = inputValidationErrorHandler;
+    }
+    
 }

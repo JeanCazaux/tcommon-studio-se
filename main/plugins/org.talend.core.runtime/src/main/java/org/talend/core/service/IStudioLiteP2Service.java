@@ -12,14 +12,23 @@
 // ============================================================================
 package org.talend.core.service;
 
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.equinox.p2.repository.IRepository;
+import org.eclipse.equinox.security.storage.ISecurePreferences;
+import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
 import org.talend.core.model.general.Project;
@@ -201,6 +210,12 @@ public interface IStudioLiteP2Service extends IService {
     }
 
     public static interface UpdateSiteConfig {
+        
+        public static final int DEFAULT_TIMEOUT = 4000;
+
+        public static final String PROTOCOL_HTTP = "http";
+
+        public static final String PROTOCOL_HTTPS = "https";
 
         boolean isReleaseEditable();
 
@@ -239,6 +254,79 @@ public interface IStudioLiteP2Service extends IService {
         boolean isOverwriteTmcUpdateSettings(IProgressMonitor monitor) throws Exception;
 
         void overwriteTmcUpdateSettings(IProgressMonitor monitor, boolean overwrite) throws Exception;
+        
+        void enableBasicAuth(String uri, boolean enable) throws Exception;
+        
+        boolean isEnabledBasicAuth(String uri) throws Exception;
+        
+        public static boolean requireCredentials(URI uri, String nameAndPwd) throws Exception {
+            String scheme = uri.getScheme();
+            if (StringUtils.isEmpty(scheme) || (!StringUtils.equals(scheme, PROTOCOL_HTTP) && !StringUtils.equals(scheme, PROTOCOL_HTTPS))) {
+                return false;
+            }
+            URL url = new URL(uri.toString() + "/p2.index");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(DEFAULT_TIMEOUT);
+            conn.setReadTimeout(DEFAULT_TIMEOUT);
+            conn.setRequestMethod("HEAD");
+            if (!StringUtils.isEmpty(nameAndPwd)) {
+                nameAndPwd = Base64.encodeBase64String(nameAndPwd.getBytes());
+                conn.addRequestProperty("Authorization", "Basic " + nameAndPwd);
+            }
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED || responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void saveCredentialsIntoSecureStore(URI uri, String uname, String pwd) throws Exception {
+            ISecurePreferences securePreferences = SecurePreferencesFactory.getDefault();
+            String nodeKey = URLEncoder.encode(uri.getHost(), StandardCharsets.UTF_8.name());
+
+            String nodeName = IRepository.PREFERENCE_NODE + '/' + nodeKey;
+            ISecurePreferences prefNode = null;
+
+            prefNode = securePreferences.node(nodeName);
+            prefNode.put(IRepository.PROP_USERNAME, uname, true);
+            prefNode.put(IRepository.PROP_PASSWORD, pwd, true);
+            securePreferences.flush();
+        }
+        
+        public static String[] loadCredentialsFromSecureStore(URI uri) throws Exception {
+            ISecurePreferences securePreferences = SecurePreferencesFactory.getDefault();
+            String nodeKey = URLEncoder.encode(uri.getHost(), StandardCharsets.UTF_8.name());
+
+            String nodeName = IRepository.PREFERENCE_NODE + '/' + nodeKey;
+            ISecurePreferences prefNode = null;
+
+            String[] namePwd = new String[2];
+
+            if (!securePreferences.nodeExists(nodeName)) {
+                return null;
+            }
+            prefNode = securePreferences.node(nodeName);
+
+            namePwd[0] = prefNode.get(IRepository.PROP_USERNAME, "");
+            namePwd[1] = prefNode.get(IRepository.PROP_PASSWORD, "");
+
+            return namePwd;
+        }
+        
+        public static void deleteCredentialsFromSecureStore(URI uri) throws Exception {
+            ISecurePreferences securePreferences = SecurePreferencesFactory.getDefault();
+            String nodeKey = URLEncoder.encode(uri.getHost(), StandardCharsets.UTF_8.name());
+
+            String nodeName = IRepository.PREFERENCE_NODE + '/' + nodeKey;
+
+            if (securePreferences.nodeExists(nodeName)) {
+                securePreferences.remove(nodeName);
+                securePreferences.flush();
+            }
+        }
+
 
     }
     

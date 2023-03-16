@@ -16,6 +16,7 @@ import org.eclipse.nebula.widgets.nattable.config.IConfigRegistry;
 import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
+import org.eclipse.nebula.widgets.nattable.style.CellStyleProxy;
 import org.eclipse.nebula.widgets.nattable.style.IStyle;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.swt.graphics.GC;
@@ -43,12 +44,8 @@ public class ContextAutoResizeTextPainter extends TextPainter {
     @Override
     public void setupGCFromConfig(GC gc, IStyle cellStyle) {
         super.setupGCFromConfig(gc, cellStyle);
-        if (cellStyle.getAttributeValue(CellStyleAttributes.FOREGROUND_COLOR).equals(GUIHelper.COLOR_RED)) {
-            gc.setForeground(GUIHelper.COLOR_BLACK);
-        } else if (containsRowName) {
+        if (containsRowName) {
             gc.setForeground(GUIHelper.COLOR_RED);
-        } else if (changeBackgroundColor) {
-            gc.setForeground(GUIHelper.COLOR_WIDGET_DARK_SHADOW);
         }
     }
 

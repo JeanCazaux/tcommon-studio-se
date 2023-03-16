@@ -23,12 +23,15 @@ import org.eclipse.nebula.widgets.nattable.extension.glazedlists.GlazedListsData
 import org.eclipse.nebula.widgets.nattable.layer.cell.ILayerCell;
 import org.eclipse.nebula.widgets.nattable.painter.cell.BackgroundPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.ICellPainter;
+import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.talend.core.ui.context.ContextTreeTable.ContextTreeNode;
 import org.talend.core.ui.context.model.ContextTabChildModel;
 import org.talend.core.ui.context.model.ContextTabParentModel;
+import org.talend.core.ui.context.model.table.ContextTableConstants;
 import org.talend.core.ui.context.model.table.ContextTableTabParentModel;
 
 /**
@@ -49,18 +52,9 @@ public class ContextNatTableBackGroudPainter extends BackgroundPainter {
     @Override
     public void paintCell(ILayerCell cell, GC gc, Rectangle bounds, IConfigRegistry configRegistry) {
         ContextTreeNode rowNode = ((GlazedListsDataProvider<ContextTreeNode>) dataProvider).getRowObject(cell.getRowIndex());
-        if (rowNode.getTreeData() instanceof ContextTableTabParentModel) {
-            ContextTableTabParentModel rowModel = (ContextTableTabParentModel) rowNode.getTreeData();
-            Boolean isRepositoryContext = rowModel.hasChildren();
-            if (isRepositoryContext) {
-                ((ContextAutoResizeTextPainter) getWrappedPainter()).setChangeBackgroundColor(true);
-            } else {
-                ((ContextAutoResizeTextPainter) getWrappedPainter()).setChangeBackgroundColor(false);
-            }
-        } else {
+        if (rowNode.getTreeData() instanceof ContextTabChildModel) {
             ContextTabChildModel rowChildModel = (ContextTabChildModel) rowNode.getTreeData();
             if (rowChildModel != null) {
-                ((ContextAutoResizeTextPainter) getWrappedPainter()).setChangeBackgroundColor(true);
                 checkContainsRowName(rowNode, rowChildModel);
             }
         }

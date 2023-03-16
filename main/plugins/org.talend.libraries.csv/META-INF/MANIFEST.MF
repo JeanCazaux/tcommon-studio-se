@@ -5,7 +5,8 @@ Bundle-SymbolicName: org.talend.libraries.csv
 Bundle-Version: 8.8.8.qualifier
 Bundle-ClassPath: .,
  lib/csv-1.0.jar,
- lib/talendcsv-1.0.0.jar
+ lib/talendcsv-1.1.0.jar
+Require-Bundle: org.slf4j.api
 Export-Package: com.talend.csv,
  org.skife.csv
 Bundle-ActivationPolicy: lazy

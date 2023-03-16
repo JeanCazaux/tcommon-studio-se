@@ -21,6 +21,7 @@ import org.eclipse.nebula.widgets.nattable.painter.cell.TextPainter;
 import org.eclipse.nebula.widgets.nattable.painter.cell.decorator.LineBorderDecorator;
 import org.eclipse.nebula.widgets.nattable.style.BorderStyle;
 import org.eclipse.nebula.widgets.nattable.style.CellStyleAttributes;
+import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.style.HorizontalAlignmentEnum;
 import org.eclipse.nebula.widgets.nattable.style.Style;
 import org.eclipse.nebula.widgets.nattable.style.VerticalAlignmentEnum;
@@ -28,6 +29,7 @@ import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.talend.commons.ui.runtime.ColorConstants;
+import org.talend.core.ui.context.model.table.ContextTableConstants;
 
 /**
  * created by ldong on Aug 26, 2014 Detailled comment
@@ -70,9 +72,17 @@ public class ContextNatTableStyleConfiguration extends AbstractRegistryConfigura
         cellStyle.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, hAlign);
         cellStyle.setAttributeValue(CellStyleAttributes.VERTICAL_ALIGNMENT, vAlign);
         cellStyle.setAttributeValue(CellStyleAttributes.BORDER_STYLE, borderStyle);
-
         configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyle);
-
+        
+        Style cellStyleValueError = new Style();
+        cellStyleValueError.setAttributeValue(CellStyleAttributes.FOREGROUND_COLOR, ColorConstants.ERROR_FONT_COLOR);
+        configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyleValueError, DisplayMode.NORMAL, ContextTableConstants.LABEL_VALUE_NOT_MATCH_TYPE);
+        configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyleValueError, DisplayMode.SELECT, ContextTableConstants.LABEL_VALUE_NOT_MATCH_TYPE);
+        
+        Style cellStyleChangedForceGround = new Style();
+        cellStyleChangedForceGround.setAttributeValue(CellStyleAttributes.FOREGROUND_COLOR, GUIHelper.COLOR_WIDGET_DARK_SHADOW);
+        configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, cellStyleChangedForceGround, DisplayMode.NORMAL, ContextTableConstants.LABEL_CHANGED_FORCEGROUND);        
+        
         configRegistry.registerConfigAttribute(CellConfigAttributes.DISPLAY_CONVERTER, new DefaultDisplayConverter());
 
     }

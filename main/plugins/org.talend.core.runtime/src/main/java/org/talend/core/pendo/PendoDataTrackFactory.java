@@ -13,7 +13,7 @@
 package org.talend.core.pendo;
 
 import org.talend.core.pendo.properties.IPendoDataProperties;
-import org.talend.core.service.IRemoteService;
+import org.talend.core.service.ICoreTisRuntimeService;
 
 /**
  * DOC jding  class global comment. Detailled comment
@@ -22,11 +22,11 @@ public class PendoDataTrackFactory {
 
     private static PendoDataTrackFactory instance;
 
-    private static IRemoteService remoteService;
+    private static ICoreTisRuntimeService coreRuntimeService;
 
     static {
         instance = new PendoDataTrackFactory();
-        remoteService = IRemoteService.get();
+        coreRuntimeService = ICoreTisRuntimeService.get();
     }
 
     private PendoDataTrackFactory() {
@@ -37,35 +37,35 @@ public class PendoDataTrackFactory {
     }
 
     public boolean isTrackSendAvailable() throws Exception {
-        if (remoteService != null) {
-            return remoteService.isPendoTrackAvailable();
+        if (coreRuntimeService != null) {
+            return coreRuntimeService.isPendoTrackAvailable();
         }
         return false;
     }
 
     public void sendTrackData(TrackEvent event, IPendoDataProperties properties) throws Exception {
-        if (remoteService != null) {
-            remoteService.sendPendoTrackData(event, properties);
+        if (coreRuntimeService != null) {
+            coreRuntimeService.sendPendoTrackData(event, properties);
         }
     }
 
     public void sendProjectLoginTrack() {
-        if (remoteService != null) {
-            AbstractPendoTrackManager pendoProjectLoginManager = remoteService.getPendoProjectLoginManager();
+        if (coreRuntimeService != null) {
+            AbstractPendoTrackManager pendoProjectLoginManager = coreRuntimeService.getPendoProjectLoginManager();
             pendoProjectLoginManager.sendTrackToPendo();
         }
     }
 
     public void sendGenericTrack(TrackEvent event, IPendoDataProperties properties) {
-        if (remoteService != null) {
-            AbstractPendoTrackManager genericManager = remoteService.getPendoGenericManager(event, properties);
+        if (coreRuntimeService != null) {
+            AbstractPendoTrackManager genericManager = coreRuntimeService.getPendoGenericManager(event, properties);
             genericManager.sendTrackToPendo();
         }
     }
 
     public String getTmcUser(String url, String token) {
-        if (remoteService != null) {
-            return remoteService.getTmcUser(url, token);
+        if (coreRuntimeService != null) {
+            return coreRuntimeService.getTmcUser(url, token);
         }
         return "";
     }

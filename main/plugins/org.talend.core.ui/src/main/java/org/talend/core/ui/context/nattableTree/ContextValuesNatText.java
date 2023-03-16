@@ -26,6 +26,8 @@ import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -271,5 +273,29 @@ public class ContextValuesNatText extends Composite {
      */
     public Button getButton() {
         return this.button;
+    }
+
+    @Override
+    public void setBackground(Color color) {
+        super.setBackground(color);
+        if (text != null && !text.isDisposed()) {
+            text.setBackground(color);
+        }
+    }
+
+    @Override
+    public void setFont(Font font) {
+        super.setFont(font);
+        if (text != null && !text.isDisposed()) {
+            text.setFont(font);
+        }
+    }
+
+    @Override
+    public void setForeground(Color color) {
+        super.setForeground(color);
+        if (text != null && !text.isDisposed()) {
+            text.setForeground(color);
+        }
     }
 }

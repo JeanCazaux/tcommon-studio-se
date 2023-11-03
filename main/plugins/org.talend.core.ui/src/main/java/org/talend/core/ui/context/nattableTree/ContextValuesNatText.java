@@ -112,6 +112,9 @@ public class ContextValuesNatText extends Composite {
         if (NatTableCellEditorFactory.isResource(realPara.getType())) {
             widgetStyle = SWT.READ_ONLY | HorizontalAlignmentEnum.getSWTStyle(cellStyle);
         }
+        if (!cellFactory.isSpecialType(realPara)) {
+            widgetStyle = widgetStyle | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL;
+        }
         text = new Text(this, widgetStyle);
         text.setBackground(cellStyle.getAttributeValue(CellStyleAttributes.BACKGROUND_COLOR));
         text.setForeground(cellStyle.getAttributeValue(CellStyleAttributes.FOREGROUND_COLOR));

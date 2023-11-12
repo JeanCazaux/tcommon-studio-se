@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextParameter;
 
 /**
@@ -113,7 +112,7 @@ public class ContextValuesNatText extends Composite {
         if (NatTableCellEditorFactory.isResource(realPara.getType())) {
             widgetStyle = SWT.READ_ONLY | HorizontalAlignmentEnum.getSWTStyle(cellStyle);
         }
-        if (JavaTypesManager.STRING.getId().equals(realPara.getType())) {
+        if (NatTableCellEditorFactory.isString(realPara.getType())) {
             widgetStyle = widgetStyle | SWT.WRAP | SWT.MULTI | SWT.V_SCROLL;
         }
         text = new Text(this, widgetStyle);

@@ -325,6 +325,13 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
         ProxyDynamicCellEditor cutomCellEditor = new ProxyDynamicCellEditor(dataProvider, manager, modelManager);
         configRegistry.registerConfigAttribute(EditConfigAttributes.CELL_EDITOR, cutomCellEditor, DisplayMode.EDIT,
                 ContextTableConstants.COLUMN_CONTEXT_VALUE);
+        ContextAutoResizeTextPainter customPainter = new ContextAutoResizeTextPainter(true, false, false);
+        customPainter.setWordWrapping(true);
+        ContextNatTableBackGroudPainter backGroudPainter = new ContextNatTableBackGroudPainter(customPainter, dataProvider);
+        configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, backGroudPainter, DisplayMode.NORMAL,
+                ContextTableConstants.COLUMN_CONTEXT_VALUE);
+        configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_PAINTER, backGroudPainter, DisplayMode.SELECT,
+                ContextTableConstants.COLUMN_CONTEXT_VALUE);
     }
 
     private void registerColumnFiveTextEditor(IConfigRegistry configRegistry) {

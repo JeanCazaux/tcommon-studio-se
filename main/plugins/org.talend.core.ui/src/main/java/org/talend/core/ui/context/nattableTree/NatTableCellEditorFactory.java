@@ -27,6 +27,7 @@ import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.service.IResourcesDependenciesService;
 import org.talend.core.ui.context.MultiStringSelectionDialog;
+import org.talend.core.ui.context.StringTextDialog;
 import org.talend.core.utils.TalendQuoteUtils;
 
 /**
@@ -44,7 +45,7 @@ public class NatTableCellEditorFactory {
         String currentType = para.getType();
         if (currentType != null) {
             if (isFile(currentType) || isDate(currentType) || isDirectory(currentType) || isList(currentType)
-                    || isResource(currentType)) {
+                    || isResource(currentType) || isString(currentType)) {
                 return true;
             }
         }
@@ -67,6 +68,8 @@ public class NatTableCellEditorFactory {
                 defalutDataValue = para.getDisplayValue();
             } else if (isResource(currentType)) {
                 transformResult = openResourcesDialogForCellEditor(parentShell, para);
+            } else if (isString(currentType)) {
+                transformResult = openStringDialogFoeCellEditor(parentShell, para);
             }
         }
         return transformResult;
@@ -140,6 +143,15 @@ public class NatTableCellEditorFactory {
         return ContextNatTableUtils.getSpecialTypeDisplayValue(JavaTypesManager.RESOURCE.getId(), value);
     }
 
+    private String openStringDialogFoeCellEditor(Shell parentShell, IContextParameter para) {
+        StringTextDialog stringTextDialog = new StringTextDialog(parentShell, para.getValue());
+        int open = stringTextDialog.open();
+        if (open == Dialog.OK) {
+            return stringTextDialog.getTextContent();
+        }
+        return "";
+    }
+
     public static String getAddQuoteString(String path) {
         ECodeLanguage codeLanguage = LanguageManager.getCurrentLanguage();
         if (codeLanguage == ECodeLanguage.PERL) {
@@ -182,6 +194,10 @@ public class NatTableCellEditorFactory {
 
     public static boolean isResource(final String value) {
         return MetadataToolHelper.isResource(value);
+    }
+
+    public static boolean isString(final String value) {
+        return JavaTypesManager.STRING.getId().equals(value);
     }
 
     /**

@@ -490,9 +490,9 @@ public class ContextTreeTable {
             Point size = gc.textExtent(text, SWT.DRAW_MNEMONIC);
             int textWidth = size.x;
             // TODO width over the max, adjust height
-            if (textWidth > 400) {
-                dataLayer.setRowHeightByPosition(i, dataLayer.DEFAULT_ROW_HEIGHT * 3);
-            }
+//            if (textWidth > 400) {
+//                dataLayer.setRowHeightByPosition(i, dataLayer.DEFAULT_ROW_HEIGHT * 3);
+//            }
             if (textWidth > max) {
                 max = textWidth;
             }

@@ -135,6 +135,31 @@ public class CreateMavenBundleTemplatePom extends CreateMaven {
         }
         return null;
     }
+    
+    protected Model createFeatureModel() {
+        InputStream inputStream = null;
+        try {
+            Model model = null;
+            inputStream = getFeatureTemplateStream();
+            if (inputStream != null) {
+                model = MODEL_MANAGER.readMavenModel(inputStream);
+            }
+            return model;
+        } catch (IOException e) {
+            ExceptionHandler.process(e);
+        } catch (CoreException e) {
+            ExceptionHandler.process(e);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    //
+                }
+            }
+        }
+        return null;
+    }
 
     protected InputStream getTemplateStream() throws IOException {
         try {
@@ -143,6 +168,16 @@ public class CreateMavenBundleTemplatePom extends CreateMaven {
             throw new IOException(e);
         }
     }
+    
+    protected InputStream getFeatureTemplateStream() throws IOException {
+        try {
+            return MavenTemplateManager.getBundleTemplateStream(JOB_TEMPLATE_BUNDLE, getBundleTemplatePath());
+        } catch (Exception e) {
+            throw new IOException(e);
+        }
+    }
+    
+    
 
     /*
      * (non-Javadoc)

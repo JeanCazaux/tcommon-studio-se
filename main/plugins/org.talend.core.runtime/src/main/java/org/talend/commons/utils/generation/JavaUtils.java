@@ -383,7 +383,7 @@ public final class JavaUtils {
         if (!isSystemPropSet) {
             return isSystemPropSet;
         }
-        String complianceLevel = getComplianceLevel();
+        String complianceLevel = System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL);
         String complierComplianceLevel =
                 getCompilerCompliance((IVMInstall2) JavaRuntime.getDefaultVMInstall(), JavaCore.VERSION_1_8);
 

@@ -47,6 +47,8 @@ import org.talend.designer.runprocess.IRunProcessService;
  *
  */
 public final class JavaUtils {
+    
+    private static final String SYS_PROP_JAVA_COMPLIANCE_LEVEL = "studio.java.compile";
 
     public static final String JAVAMODULE_PLUGIN_ID = "org.talend.designer.codegen.javamodule"; //$NON-NLS-1$
 
@@ -54,9 +56,9 @@ public final class JavaUtils {
 
     public static final String PROJECT_JAVA_VERSION_KEY = "talend.project.java.version"; //$NON-NLS-1$
 
-    public static final String DEFAULT_VERSION = JavaCore.VERSION_1_8;
+    public static final String DEFAULT_VERSION = getComplianceLevel();
 
-    public static final List<String> AVAILABLE_VERSIONS = Arrays.asList(JavaCore.VERSION_1_8 );
+    public static final List<String> AVAILABLE_VERSIONS = Arrays.asList(DEFAULT_VERSION);
 
     public static final String ALLOW_JAVA_INTERNAL_ACCESS = "allow.java.internal.access"; //$NON-NLS-1$
 
@@ -284,6 +286,9 @@ public final class JavaUtils {
         if (version == null) {
             return defaultCompliance;
         }
+        if (version.startsWith(JavaCore.VERSION_17)) {
+            return JavaCore.VERSION_17;
+        }
         if (version.startsWith(JavaCore.VERSION_1_8)) {
             return JavaCore.VERSION_1_8;
         }
@@ -363,6 +368,14 @@ public final class JavaUtils {
         if (monitor != null) {
             monitor.worked(1);
         }
+    }
+    
+    private static String getComplianceLevel() {
+        return System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL, JavaCore.VERSION_1_8);
+    }
+    
+    public static boolean isComplianceLevelSet() {
+        return System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL) == null ? false : true;
     }
 
 }

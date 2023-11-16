@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.core.internal.resources.Workspace;
@@ -2468,25 +2469,33 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
             log.error("Unable to unregister service of " + org.osgi.service.url.URLStreamHandlerService.class, e1);
         }
     }
-    private void updateProjectJavaVersionIfNeed() {
-        String specifiedVersion = null;
-        String currentVersion = JavaUtils.getProjectJavaVersion();
-        String newVersion = null;
-        try {
-            JavaHomeUtil.initializeJavaHome();
-        } catch (CoreException ex) {
-            ExceptionHandler.process(ex);
-        }
-        if (CommonUIPlugin.isFullyHeadless()) {
-            specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
-        }
-        if (specifiedVersion == null) {
-            newVersion = currentVersion != null ? currentVersion : JavaUtils.DEFAULT_VERSION;
-        } else {
-            newVersion = specifiedVersion;
-        }
 
-        JavaUtils.updateProjectJavaVersion(newVersion);
+    private void updateProjectJavaVersionIfNeed() {
+        String newVersion = null;
+        if (JavaUtils.isComplianceLevelSet()) {
+            newVersion = JavaUtils.DEFAULT_VERSION;
+            String currentVersion = JavaUtils.getProjectJavaVersion();
+            if (!StringUtils.equals(newVersion, currentVersion)) {
+                JavaUtils.updateProjectJavaVersion(newVersion);
+            }
+        } else {
+            String specifiedVersion = null;
+            String currentVersion = JavaUtils.getProjectJavaVersion();
+            try {
+                JavaHomeUtil.initializeJavaHome();
+            } catch (CoreException ex) {
+                ExceptionHandler.process(ex);
+            }
+            if (CommonUIPlugin.isFullyHeadless()) {
+                specifiedVersion = JavaHomeUtil.getSpecifiedJavaVersion();
+            }
+            if (specifiedVersion == null) {
+                newVersion = currentVersion != null ? currentVersion : JavaUtils.DEFAULT_VERSION;
+            } else {
+                newVersion = specifiedVersion;
+            }
+            JavaUtils.updateProjectJavaVersion(newVersion);
+        }
     }
 
     private void syncAndInstallCodes(IProgressMonitor monitor) {

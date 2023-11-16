@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
@@ -371,11 +372,31 @@ public final class JavaUtils {
     }
     
     private static String getComplianceLevel() {
-        return System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL, JavaCore.VERSION_1_8);
+        if (isComplianceLevelSet()) {
+            return System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL, JavaCore.VERSION_1_8);
+        }
+        return JavaCore.VERSION_1_8;
     }
     
     public static boolean isComplianceLevelSet() {
-        return System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL) == null ? false : true;
+        boolean isSystemPropSet = System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL) == null ? false : true;
+        if (!isSystemPropSet) {
+            return isSystemPropSet;
+        }
+        String complianceLevel = getComplianceLevel();
+        String complierComplianceLevel =
+                getCompilerCompliance((IVMInstall2) JavaRuntime.getDefaultVMInstall(), JavaCore.VERSION_1_8);
+
+        if (!StringUtils.equals(complianceLevel, complierComplianceLevel)) {
+            ExceptionHandler
+                    .log("Not compatible, complianceLevel set by system property: " + complianceLevel + ", jvm's complierComplianceLevel: "
+                            + complierComplianceLevel);
+            return false;
+        }
+        ExceptionHandler
+        .log("complianceLevel set by system property: " + complianceLevel + ", complierComplianceLevel: "
+                + complierComplianceLevel);
+        return isSystemPropSet;
     }
 
 }

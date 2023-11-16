@@ -2481,6 +2481,12 @@ public final class ProxyRepositoryFactory implements IProxyRepositoryFactory {
         } else {
             String specifiedVersion = null;
             String currentVersion = JavaUtils.getProjectJavaVersion();
+            if (JavaUtils.isAllowInternalAccess()) {
+                currentVersion = JavaUtils.getDefaultComplianceLevel();
+            } else {
+                // restore back to java 8
+                currentVersion = JavaUtils.DEFAULT_VERSION;
+            }
             try {
                 JavaHomeUtil.initializeJavaHome();
             } catch (CoreException ex) {

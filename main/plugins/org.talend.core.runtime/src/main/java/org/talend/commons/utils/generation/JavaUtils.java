@@ -33,6 +33,7 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.IVMInstall2;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.resource.FileExtensions;
@@ -40,6 +41,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.repository.ProjectManager;
 
 /**
  * Utilities around perl stuff. <br/>
@@ -63,6 +65,8 @@ public final class JavaUtils {
 
     public static final String ALLOW_JAVA_INTERNAL_ACCESS = "allow.java.internal.access"; //$NON-NLS-1$
 
+    public static final String ALLOW_JAVA_INTERNAL_ACCESS_BACKUP = "allow.java.internal.access.backup";
+    
     public static final String CUSTOM_ACCESS_SETTINGS = "custom.access.settings"; //$NON-NLS-1$
 
     public static final String PROCESSOR_TYPE = "javaProcessor"; //$NON-NLS-1$
@@ -378,25 +382,38 @@ public final class JavaUtils {
         return JavaCore.VERSION_1_8;
     }
     
+    public static String getDefaultComplianceLevel() {
+        return getCompilerCompliance((IVMInstall2) JavaRuntime.getDefaultVMInstall(), JavaCore.VERSION_1_8);
+    }
+
     public static boolean isComplianceLevelSet() {
         boolean isSystemPropSet = System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL) == null ? false : true;
         if (!isSystemPropSet) {
             return isSystemPropSet;
         }
         String complianceLevel = System.getProperty(SYS_PROP_JAVA_COMPLIANCE_LEVEL);
-        String complierComplianceLevel =
-                getCompilerCompliance((IVMInstall2) JavaRuntime.getDefaultVMInstall(), JavaCore.VERSION_1_8);
-
+        String complierComplianceLevel = getDefaultComplianceLevel();
         if (!StringUtils.equals(complianceLevel, complierComplianceLevel)) {
             ExceptionHandler
-                    .log("Not compatible, complianceLevel set by system property: " + complianceLevel + ", jvm's complierComplianceLevel: "
-                            + complierComplianceLevel);
+                    .log("Not compatible, complianceLevel set by system property: " + complianceLevel
+                            + ", jvm's complierComplianceLevel: " + complierComplianceLevel);
             return false;
         }
         ExceptionHandler
-        .log("complianceLevel set by system property: " + complianceLevel + ", complierComplianceLevel: "
-                + complierComplianceLevel);
+                .log("complianceLevel set by system property: " + complianceLevel + ", complierComplianceLevel: "
+                        + complierComplianceLevel);
         return isSystemPropSet;
+    }
+
+    public static boolean isAllowInternalAccess() {
+        return getJavaVersionProjectSettingPrefStore().getBoolean(ALLOW_JAVA_INTERNAL_ACCESS);
+    }
+
+    private static IPreferenceStore getJavaVersionProjectSettingPrefStore() {
+        ProjectPreferenceManager projectPreferenceManager = new ProjectPreferenceManager(
+                ProjectManager.getInstance().getCurrentProject(), CoreRuntimePlugin.PLUGIN_ID, false);
+        // set the project preference
+        return projectPreferenceManager.getPreferenceStore();
     }
 
 }

@@ -718,7 +718,7 @@ public class RepositoryNodeUtilities {
         if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericWizardService.class)) {
             wizardService = GlobalServiceRegister.getDefault().getService(IGenericWizardService.class);
         }
-        if (wizardService != null && wizardService.isGenericType(type)) {
+        if (wizardService != null && wizardService.isGenericType(type) || ERepositoryObjectType.METADATA_TACOKIT_JDBC == type) {
             return getGenericSchemaNode(connection, tableName);
         }
         if (repType == ERepositoryObjectType.METADATA_CON_QUERY) {

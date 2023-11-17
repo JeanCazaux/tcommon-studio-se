@@ -36,6 +36,7 @@ import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
@@ -382,7 +383,22 @@ public final class JavaUtils {
         return JavaCore.VERSION_1_8;
     }
     
-    public static String getDefaultComplianceLevel() {
+    
+    /**
+     * When allow java internal access, need to set compliance to java 11, if current complier's version>=11, otherwise
+     * set to Java 8.
+     * 
+     * @return
+     */
+    public static String getCompatibleComplianceLevel() {
+        String ver = getDefaultComplianceLevel();
+        if (VersionUtils.compareTo(ver, JavaCore.VERSION_11) < 0) {
+            ver = JavaCore.VERSION_1_8;
+        }
+        return JavaCore.VERSION_11;
+    }
+    
+    private static String getDefaultComplianceLevel() {
         return getCompilerCompliance((IVMInstall2) JavaRuntime.getDefaultVMInstall(), JavaCore.VERSION_1_8);
     }
 

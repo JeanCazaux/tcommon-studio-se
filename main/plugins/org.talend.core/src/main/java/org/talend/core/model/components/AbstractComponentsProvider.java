@@ -34,6 +34,8 @@ public abstract class AbstractComponentsProvider {
     private String folderName;
 
     private String contributer;
+    
+    private String javaMajorVersion;
 
     public String getId() {
         return id;
@@ -49,6 +51,16 @@ public abstract class AbstractComponentsProvider {
 
     public String getFolderName() {
         return folderName;
+    }
+
+    
+    public String getJavaMajorVersion() {
+        return javaMajorVersion;
+    }
+
+    
+    public void setJavaMajorVersion(String javaMajorVersion) {
+        this.javaMajorVersion = javaMajorVersion;
     }
 
     public String getComponentsLocation() {

@@ -83,6 +83,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.ui.login.LoginHelper;
 import org.talend.utils.StudioKeysFileCheck;
+import org.talend.utils.VersionException;
 
 /**
  * This class controls all aspects of the application's execution.
@@ -146,9 +147,13 @@ public class Application implements IApplication {
             StudioKeysFileCheck.validateJavaVersion();
         } catch (Exception e) {
             Shell shell = new Shell(display, SWT.NONE);
-            MessageDialog.openError(shell, null, // $NON-NLS-1$
-                    Messages.getString("JavaVersion.CheckError", StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING,
-                            StudioKeysFileCheck.getJavaVersion()));
+            if (e instanceof VersionException) {
+                String msgKey = ((VersionException) e).requireUpgrade() ? "JavaVersion.CheckError" : "JavaVersion.CheckError.notSupported";
+
+                MessageDialog
+                        .openError(shell, null, // $NON-NLS-1$
+                                Messages.getString(msgKey, StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING, StudioKeysFileCheck.getJavaVersion()));
+            }
             return IApplication.EXIT_RELAUNCH;
         }
 

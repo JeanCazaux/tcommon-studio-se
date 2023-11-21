@@ -52,7 +52,7 @@ import org.talend.repository.ProjectManager;
  */
 public final class JavaUtils {
     
-    private static final String SYS_PROP_JAVA_COMPLIANCE_LEVEL = "studio.java.compile";
+    private static final String SYS_PROP_JAVA_COMPLIANCE_LEVEL = "job.compliance";
 
     public static final String JAVAMODULE_PLUGIN_ID = "org.talend.designer.codegen.javamodule"; //$NON-NLS-1$
 

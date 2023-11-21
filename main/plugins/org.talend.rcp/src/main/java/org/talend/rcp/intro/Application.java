@@ -148,11 +148,11 @@ public class Application implements IApplication {
         } catch (Exception e) {
             Shell shell = new Shell(display, SWT.NONE);
             if (e instanceof VersionException) {
-                String msgKey = ((VersionException) e).requireUpgrade() ? "JavaVersion.CheckError" : "JavaVersion.CheckError.notSupported";
-
-                MessageDialog
-                        .openError(shell, null, // $NON-NLS-1$
-                                Messages.getString(msgKey, StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING, StudioKeysFileCheck.getJavaVersion()));
+                String msg = Messages.getString("JavaVersion.CheckError", StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING, StudioKeysFileCheck.getJavaVersion());
+                if (!((VersionException) e).requireUpgrade()) {
+                    msg = Messages.getString("JavaVersion.CheckError.notSupported", StudioKeysFileCheck.JAVA_VERSION_MAXIMUM_STRING, StudioKeysFileCheck.getJavaVersion());
+                }
+                MessageDialog.openError(shell, null, msg);
             }
             return IApplication.EXIT_OK;
         }

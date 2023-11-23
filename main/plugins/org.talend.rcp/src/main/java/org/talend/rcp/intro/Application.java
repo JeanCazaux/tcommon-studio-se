@@ -51,6 +51,7 @@ import org.talend.commons.runtime.service.ComponentsInstallComponent;
 import org.talend.commons.runtime.service.PatchComponent;
 import org.talend.commons.ui.runtime.update.PreferenceKeys;
 import org.talend.commons.ui.swt.dialogs.ErrorDialogWidthDetailArea;
+import org.talend.commons.utils.generation.JavaUtils;
 import org.talend.commons.utils.network.NetworkUtil;
 import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.commons.utils.system.EclipseCommandLine;
@@ -78,6 +79,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryService;
 import org.talend.repository.ui.login.LoginHelper;
 import org.talend.utils.StudioKeysFileCheck;
+import org.talend.utils.VersionException;
 
 /**
  * This class controls all aspects of the application's execution.
@@ -112,6 +114,23 @@ public class Application implements IApplication {
         StudioKeysFileCheck.check(ConfigurationScope.INSTANCE.getLocation().toFile());
         
         Display display = PlatformUI.createDisplay();
+
+        try {
+            JavaUtils.validateJavaVersion();
+        } catch (Exception e) {
+            Shell shell = new Shell(display, SWT.NONE);
+            if (e instanceof VersionException) {
+                String msg = Messages.getString("JavaVersion.CheckError", StudioKeysFileCheck.JAVA_VERSION_MINIMAL_STRING,
+                        StudioKeysFileCheck.getJavaVersion());
+                if (!((VersionException) e).requireUpgrade()) {
+                    msg = Messages.getString("JavaVersion.CheckError.notSupported",
+                            StudioKeysFileCheck.JAVA_VERSION_MAXIMUM_STRING, StudioKeysFileCheck.getJavaVersion());
+                }
+                MessageDialog.openError(shell, null, msg);
+            }
+            return IApplication.EXIT_OK;
+        }
+
         try {
             // TUP-5816 don't put any code ahead of this part unless you make sure it won't trigger workspace
             // initialization.

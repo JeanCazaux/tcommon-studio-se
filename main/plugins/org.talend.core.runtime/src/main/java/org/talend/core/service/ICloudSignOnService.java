@@ -14,6 +14,7 @@ package org.talend.core.service;
 
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.IService;
+import org.talend.signon.util.PAT;
 import org.talend.signon.util.TokenMode;
 import org.talend.signon.util.listener.LoginEventListener;
 
@@ -53,4 +54,21 @@ public interface ICloudSignOnService extends IService {
         }
         return null;
     }
+    
+    /**
+     * Introspect PAT to retrieve the pat_created date and user info
+     * @param pat Personal access token of TMC
+     * @param dataCenter data center of TMC
+     * @return Introspected PAT
+     */
+    PAT introspectPAT(String pat, String dataCenter);
+    
+    /**
+     * Introspect pat and check whether pat is allowed
+     * 
+     * @param pat Personal access token
+     * @param tmcUrl tmc url
+     * @return valid or not
+     */
+    boolean validatePAT(String pat, String tmcUrl);
 }

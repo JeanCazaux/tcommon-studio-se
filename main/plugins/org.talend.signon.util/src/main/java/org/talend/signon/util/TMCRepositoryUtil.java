@@ -13,6 +13,8 @@
 package org.talend.signon.util;
 
 
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.osgi.service.prefs.BackingStoreException;
@@ -58,6 +60,15 @@ public class TMCRepositoryUtil {
     
     public static final String ORG_TALEND_RECENT_DATA_CENTERR = "org.talend.recent.datacenter";
 
+    public static final String TOKEN_INTROSPECT_URL = "https://iam.%s.cloud.talend.com/oidc/oauth2/introspect"; //$NON-NLS-1$
+
+    public static final int ALLOWED_PAT_MAX_DAYS = 60;
+
+    public static final long ALLOWED_PAT_MAX_MILLI_SECONDS = ALLOWED_PAT_MAX_DAYS * 24 * 60 * 1000;
+
+    public static final Pattern DATA_CENTER_PATTERN = Pattern.compile("^http[s?]://tmc\\.(.*)(\\.cloud\\.talend\\.com.*)", Pattern.CASE_INSENSITIVE);
+
+    
     public static String getBaseLoginURL(String dataCenter) {
         if (dataCenter == null) {
             dataCenter = TMCRepositoryUtil.getDefaultDataCenter();
@@ -149,4 +160,7 @@ public class TMCRepositoryUtil {
         return REPOSITORY_CLOUD_CUSTOM_ID;
     }
 
+    public static String getTokenIntrospectURL(String dataCenter) {
+        return String.format(TOKEN_INTROSPECT_URL, dataCenter);
+    }
 }

@@ -283,6 +283,15 @@ public final class JavaUtils {
         if (version == null) {
             return defaultCompliance;
         }
+        if (version.startsWith(JavaCore.VERSION_11)) {
+            return JavaCore.VERSION_11;
+        }
+        if (version.startsWith(JavaCore.VERSION_10)) {
+            return JavaCore.VERSION_10;
+        }
+        if (version.startsWith(JavaCore.VERSION_9)) {
+            return JavaCore.VERSION_9;
+        }
         if (version.startsWith(JavaCore.VERSION_1_8)) {
             return JavaCore.VERSION_1_8;
         }

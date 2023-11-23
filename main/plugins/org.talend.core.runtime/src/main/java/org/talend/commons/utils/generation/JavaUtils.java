@@ -40,6 +40,7 @@ import org.talend.core.GlobalServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.utils.JavaVersion;
 import org.talend.utils.StudioKeysFileCheck;
 import org.talend.utils.VersionException;
 
@@ -283,14 +284,9 @@ public final class JavaUtils {
         if (version == null) {
             return defaultCompliance;
         }
-        if (version.startsWith(JavaCore.VERSION_11)) {
-            return JavaCore.VERSION_11;
-        }
-        if (version.startsWith(JavaCore.VERSION_10)) {
-            return JavaCore.VERSION_10;
-        }
-        if (version.startsWith(JavaCore.VERSION_9)) {
-            return JavaCore.VERSION_9;
+        JavaVersion ver = new JavaVersion(version);
+        if (ver.getMajor() > 8) {
+            return String.valueOf(ver.getMajor());
         }
         if (version.startsWith(JavaCore.VERSION_1_8)) {
             return JavaCore.VERSION_1_8;

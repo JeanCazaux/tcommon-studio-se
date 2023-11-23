@@ -34,11 +34,14 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.osgi.service.prefs.BackingStoreException;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.commons.utils.resource.FileExtensions;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.projectsetting.ProjectPreferenceManager;
 import org.talend.designer.runprocess.IRunProcessService;
+import org.talend.utils.StudioKeysFileCheck;
+import org.talend.utils.VersionException;
 
 /**
  * Utilities around perl stuff. <br/>
@@ -362,6 +365,21 @@ public final class JavaUtils {
         }
         if (monitor != null) {
             monitor.worked(1);
+        }
+    }
+    
+    public static void validateJavaVersion() {
+
+        // validate jvm which is used to start studio
+        StudioKeysFileCheck.validateJavaVersion();
+
+        // validate default complier's compliance level
+        IVMInstall install = JavaRuntime.getDefaultVMInstall();
+        String ver = getCompilerCompliance((IVMInstall2) install, JavaCore.VERSION_1_8);
+        if (VersionUtils.compareTo(ver, StudioKeysFileCheck.JAVA_VERSION_MAXIMUM_STRING) > 0) {
+            VersionException e = new VersionException(VersionException.ERR_JAVA_VERSION_NOT_SUPPORTED,
+                    "The maximum Java version supported by Studio is " + StudioKeysFileCheck.JAVA_VERSION_MAXIMUM_STRING + ". Your compiler's compliance level is " + ver);
+            throw e;
         }
     }
 

@@ -12,6 +12,10 @@
 // ============================================================================
 package org.talend.repository.items.importexport.handlers.imports;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,13 +28,24 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
+import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.ItemRelation;
 import org.talend.core.model.properties.ItemRelations;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.relationship.Relation;
 import org.talend.core.model.relationship.RelationshipItemBuilder;
+import org.talend.repository.items.importexport.handlers.HandlerUtil;
+import org.talend.repository.items.importexport.handlers.ImportHandlerHelper;
+import org.talend.repository.items.importexport.handlers.model.ImportItem;
 import org.talend.repository.items.importexport.wizard.models.ItemImportNode;
 
 /**
@@ -91,6 +106,7 @@ public class ImportDependencyRelationsHelper {
         checkedNodeList.forEach(checkedNode -> {
             List<ItemImportNode> relatedImportNodes = findOutRelationsItemImportNodes(checkedNode, toSelectSet,
                     allImportItemNodesList);
+            findOutConnectionContextRelationItemImportNodes(checkedNode, toSelectSet, relatedImportNodes, allImportItemNodesList);
             checkImportRelationDependency(relatedImportNodes, toSelectSet, allImportItemNodesList);
         });
     }
@@ -146,6 +162,58 @@ public class ImportDependencyRelationsHelper {
             }
         });
         return relatedImportNodesList;
+    }
+
+    private void findOutConnectionContextRelationItemImportNodes(ItemImportNode checkedNode, Set<ItemImportNode> toSelectSet,
+            List<ItemImportNode> relatedImportNodes, List<ItemImportNode> allImportItemNodesList) {
+        ImportItem importItem = checkedNode.getItemRecord();
+        if (!(importItem.getProperty().getItem() instanceof ConnectionItem)) {
+            return;
+        }
+        BufferedInputStream stream = null;
+        try {
+            ResourceSet resourceSet = importItem.getResourceSet();
+            IPath itemPath = HandlerUtil.getItemPath(importItem.getPath(), importItem.getItem());
+            URI itemUri = HandlerUtil.getURI(itemPath);
+            Resource itemResource = resourceSet.createResource(itemUri);
+            File itemFile = new File(itemPath.toPortableString());
+            stream = new BufferedInputStream(new FileInputStream(itemFile));
+            itemResource.load(stream, null);
+            URI propertyUri = HandlerUtil.getURI(importItem.getPath());
+            Resource resource = importItem.getResourceSet().getResource(propertyUri, false);
+            File propertyFile = new File(importItem.getPath().toPortableString());
+            stream = new BufferedInputStream(new FileInputStream(propertyFile));
+            resource.load(stream, null);
+            Property property = new ImportHandlerHelper().generateProperty(resource);
+            Item item = property.getItem();
+            if (item instanceof ConnectionItem) {
+                ConnectionItem connItem = (ConnectionItem) item;
+                Connection connection = connItem.getConnection();
+                if (connection.isContextMode() && StringUtils.isNotBlank(connection.getContextId())) {
+                    String technicalLabel = checkedNode.getProjectNode().getProject().getTechnicalLabel();
+                    ItemImportNode contextImportNode = getLatestVersionItemImportNode(connection.getContextId(), technicalLabel,
+                            allImportItemNodesList, false);
+                    if (contextImportNode != null && !toSelectSet.contains(contextImportNode)) {
+                        toSelectSet.add(contextImportNode);
+                        relatedImportNodes.add(contextImportNode);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            if (Platform.inDebugMode()) {
+                ExceptionHandler.process(e);
+            }
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    if (Platform.inDebugMode()) {
+                        ExceptionHandler.process(e);
+                    }
+                }
+            }
+        }
     }
 
     public ItemImportNode getLatestVersionItemImportNode(String id, String projectTecLabel,

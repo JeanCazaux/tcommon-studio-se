@@ -31,7 +31,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  *
@@ -50,6 +52,23 @@ public final class XMLFileUtil {
 	public static Document loadDoc(InputStream stream) throws ParserConfigurationException, SAXException, IOException {
 		try {
 			DocumentBuilder db = DOCBUILDER_FACTORY.newDocumentBuilder();
+			db.setErrorHandler(new ErrorHandler() {
+                
+                @Override
+                public void warning(SAXParseException exception) throws SAXException {
+                    throw exception;
+                }
+                
+                @Override
+                public void fatalError(SAXParseException exception) throws SAXException {
+                    throw exception;
+                }
+                
+                @Override
+                public void error(SAXParseException exception) throws SAXException {
+                    throw exception;
+                }
+            });
 			return db.parse(stream);
 		} finally {
 			try {

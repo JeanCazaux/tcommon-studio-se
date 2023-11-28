@@ -175,12 +175,15 @@ public class ImportDependencyRelationsHelper {
             ResourceSet resourceSet = importItem.getResourceSet();
             IPath itemPath = HandlerUtil.getItemPath(importItem.getPath(), importItem.getItem());
             URI itemUri = HandlerUtil.getURI(itemPath);
-            Resource itemResource = resourceSet.createResource(itemUri);
+            Resource itemResource = resourceSet.getResource(itemUri, false);
+            if (itemResource == null) {
+                itemResource = resourceSet.createResource(itemUri);
+            }
             File itemFile = new File(itemPath.toPortableString());
             stream = new BufferedInputStream(new FileInputStream(itemFile));
             itemResource.load(stream, null);
             URI propertyUri = HandlerUtil.getURI(importItem.getPath());
-            Resource resource = importItem.getResourceSet().getResource(propertyUri, false);
+            Resource resource = resourceSet.getResource(propertyUri, false);
             File propertyFile = new File(importItem.getPath().toPortableString());
             stream = new BufferedInputStream(new FileInputStream(propertyFile));
             resource.load(stream, null);

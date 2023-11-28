@@ -147,7 +147,11 @@ public class LDAPCATruster implements X509TrustManager {
             } catch (IOException ex) {
             }
         try {
-            ks.load(in, certStorePwd);
+            if (in != null) {
+                ks.load(in, certStorePwd);
+            } else {
+                ks = null;
+            }
         } catch (Exception e) {
             log.error(Messages.getString("LDAPCATruster.failedLoadCert") + e.getMessage()); //$NON-NLS-1$
             return;

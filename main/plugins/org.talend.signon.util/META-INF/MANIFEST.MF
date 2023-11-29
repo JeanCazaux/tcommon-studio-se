@@ -8,7 +8,8 @@ Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  lib/commons-exec.jar
 Bundle-Vendor: .Talend SA.
-Import-Package: org.osgi.framework;version="1.10.0",
+Import-Package: com.fasterxml.jackson.annotation,
+ org.osgi.framework;version="1.10.0",
  org.talend.utils.json
 Export-Package: org.talend.signon.util,
  org.talend.signon.util.i18n,

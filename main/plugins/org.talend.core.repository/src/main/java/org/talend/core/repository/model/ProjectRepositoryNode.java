@@ -35,6 +35,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.runtime.service.ITaCoKitService;
 import org.talend.commons.ui.runtime.exception.RuntimeExceptionHandler;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.repository.IExtendRepositoryNode;
@@ -823,7 +824,8 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
      * @return
      */
     private RepositoryNode getFolder(ERepositoryObjectType currentType, String path, List<IRepositoryNode> rootNodes) {
-        if (RepositoryNodeUtilities.isGenericDBExtraType(currentType) || RepositoryNodeManager.isSnowflake(currentType)) {
+        if (RepositoryNodeUtilities.isGenericDBExtraType(currentType) || RepositoryNodeManager.isSnowflake(currentType)
+                || (ITaCoKitService.getInstance() != null && ITaCoKitService.getInstance().isTaCoKitType(currentType))) {
             currentType = ERepositoryObjectType.METADATA_CONNECTIONS;
         }
         if (path == null || path.isEmpty()) {

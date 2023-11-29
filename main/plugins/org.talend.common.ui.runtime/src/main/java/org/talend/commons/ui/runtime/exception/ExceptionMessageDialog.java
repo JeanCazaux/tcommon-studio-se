@@ -40,6 +40,8 @@ public class ExceptionMessageDialog extends MessageDialog {
     private String exceptionString = null;
 
     private int[] diabledButtonIndex = new int[] {};
+    
+    private boolean expandedOnOpen = false;
 
     public ExceptionMessageDialog(Shell parentShell, String dialogTitle, Image dialogTitleImage, String dialogMessage,
             int dialogImageType, String[] dialogButtonLabels, int defaultIndex, Throwable ex) {
@@ -85,6 +87,8 @@ public class ExceptionMessageDialog extends MessageDialog {
         text.setText(exceptionString);
         text.setEditable(false);
         errorComposite.setClient(text);
+        
+        errorComposite.setExpanded(expandedOnOpen);
 
         return errorComposite;
     }
@@ -148,6 +152,22 @@ public class ExceptionMessageDialog extends MessageDialog {
 
     public void setExceptionString(String exceptionString) {
         this.exceptionString = exceptionString;
+    }
+
+    
+    /**
+     * @return the expandedOnOpen
+     */
+    public boolean isExpandedOnOpen() {
+        return expandedOnOpen;
+    }
+
+    
+    /**
+     * @param expandedOnOpen the expandedOnOpen to set
+     */
+    public void setExpandedOnOpen(boolean expandedOnOpen) {
+        this.expandedOnOpen = expandedOnOpen;
     }
 
     public void setDisabledButtons(int[] index) {

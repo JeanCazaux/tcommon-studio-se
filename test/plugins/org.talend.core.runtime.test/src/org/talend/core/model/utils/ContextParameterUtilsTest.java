@@ -346,16 +346,16 @@ public class ContextParameterUtilsTest {
     @Test
     public void testGetOriginalList() {
         ContextType contextType = createContextType("TEST");
-        ContextParameterType param1 = createContextParameterType("Copy_of_jdbc14_drivers", "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0");
+        ContextParameterType param1 = createContextParameterType("Copy_of_jdbc14_drivers", "mvn:mysql/mysql-connector-java/5.1.30");
         param1.setType(JavaTypesManager.STRING.getId());
         contextType.getContextParameter().add(param1);
 
         List<String> values = ContextParameterUtils.getOriginalList(contextType, "context.Copy_of_jdbc14_drivers");
         assertTrue(values.size() == 1);
-        assertTrue(values.get(0).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"));
+        assertTrue(values.get(0).equals("mvn:mysql/mysql-connector-java/5.1.30"));
 
         contextType = createContextType("TEST");
-        param1 = createContextParameterType("Copy_of_jdbc14_drivers", "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
+        param1 = createContextParameterType("Copy_of_jdbc14_drivers", "mvn:mysql/mysql-connector-java/5.1.30;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
         param1.setType(JavaTypesManager.STRING.getId());
         contextType.getContextParameter().add(param1);
 
@@ -381,15 +381,15 @@ public class ContextParameterUtilsTest {
         IContextParameter contextParam = contextParam = new JobContextParameter();
         contextParam.setName("jdbc1_drivers");
         contextParam.setType(JavaTypesManager.STRING.getId());//id_List Of Value
-        contextParam.setValue("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
+        contextParam.setValue("mvn:mysql/mysql-connector-java/5.1.30;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
 //        contextParam.setValue("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0;mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0");
         testGroup.getContextParameterList().add(contextParam);
 
         contextParam = new JobContextParameter();
         contextParam.setName("jdbc1_drivers2");
         contextParam.setType(JavaTypesManager.STRING.getId());//id_List Of Value
-        contextParam.setValue("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0");
-        String [] vs2 = {"mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"};
+        contextParam.setValue("mvn:mysql/mysql-connector-java/5.1.30");
+        String [] vs2 = {"mvn:mysql/mysql-connector-java/5.1.30"};
         contextParam.setValueList(vs2);
         testGroup.getContextParameterList().add(contextParam);
 
@@ -397,14 +397,14 @@ public class ContextParameterUtilsTest {
         l.add("context.jdbc1_drivers");
         List v1 = ContextParameterUtils.parseScriptContextCodeList(l, testGroup, true);
         assertTrue(v1.size() == 2);
-        assertTrue(v1.get(0).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"));
+        assertTrue(v1.get(0).equals("mvn:mysql/mysql-connector-java/5.1.30"));
         assertTrue(v1.get(1).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.40-bin/6.0.0"));
 
         l = new ArrayList<String>();
         l.add("context.jdbc1_drivers2");
         List v2 = ContextParameterUtils.parseScriptContextCodeList(l, testGroup, true);
         assertTrue(v2.size() == 1);
-        assertTrue(v2.get(0).equals("mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0"));
+        assertTrue(v2.get(0).equals("mvn:mysql/mysql-connector-java/5.1.30"));
     }
 
     @Test

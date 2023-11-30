@@ -48,7 +48,6 @@ import org.talend.core.model.context.JobContext;
 import org.talend.core.model.context.JobContextParameter;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.MetadataTalendType;
-import org.talend.core.model.metadata.builder.connection.AdditionalConnectionProperty;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.FTPConnection;
@@ -382,12 +381,7 @@ public final class ConnectionContextHelper {
             } catch (JSONException e) {
                 ExceptionHandler.process(e);
             }
-        } else if (currentConnection instanceof SAPConnection) {
-            SAPConnection sapConn = (SAPConnection) currentConnection;
-            for (AdditionalConnectionProperty sapProperty : sapConn.getAdditionalProperties()) {
-                varList.add(sapProperty.getPropertyName());
-            }
-        } else if (currentConnection instanceof DatabaseConnection && !(currentConnection instanceof TacokitDatabaseConnection)) {
+        }else if (currentConnection instanceof DatabaseConnection && !(currentConnection instanceof TacokitDatabaseConnection)) {
             DatabaseConnection dbConn = (DatabaseConnection) currentConnection;
             List<Map<String, Object>> hadoopPropertiesList = DBConnectionContextUtils.getHiveOrHbaseHadoopProperties(dbConn);
             if (!hadoopPropertiesList.isEmpty()) {

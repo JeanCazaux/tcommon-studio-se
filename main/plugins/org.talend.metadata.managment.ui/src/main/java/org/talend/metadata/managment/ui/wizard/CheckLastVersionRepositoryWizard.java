@@ -28,6 +28,7 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.exception.ExceptionHandler;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.ITDQRepositoryService;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
@@ -176,11 +177,34 @@ public abstract class CheckLastVersionRepositoryWizard extends RepositoryWizard 
         workspace.run(operation, schedulingRule, IWorkspace.AVOID_UPDATE, new NullProgressMonitor());
     }
 
-    @Override
-    public boolean performCancel() {
-        // connectionCopy = null;
-        // metadataTableCopy = null;
-        return super.performCancel();
+
+    protected void updateDQDependency(boolean isModified, String originaleObjectLabel) {
+        if (isModified) {
+            if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
+                ITDQRepositoryService tdqRepService = GlobalServiceRegister.getDefault()
+                        .getService(ITDQRepositoryService.class);
+                if (tdqRepService != null) {
+                    // TDQ-6395, save all dependency of the connection when the name is changed.
+                    tdqRepService.saveConnectionWithDependency(connectionItem);
+
+                    // TDQ-7438, If the analysis editor is opened, popup the dialog which ask user refresh
+                    // the editor or not once should enough(use hasReloaded to control,because the reload will refresh)
+                    tdqRepService.refreshCurrentAnalysisEditor(connectionItem);
+
+                    tdqRepService.updateAliasInSQLExplorer(connectionItem, originaleObjectLabel);
+                }
+            }
+        }
+    }
+
+    protected void notifyDQSQLExplorer() {
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
+            ITDQRepositoryService tdqRepService = GlobalServiceRegister.getDefault()
+                    .getService(ITDQRepositoryService.class);
+            if (tdqRepService != null) {
+                tdqRepService.notifySQLExplorer(connectionItem);
+            }
+        }
     }
 
     protected void refreshInFinish(boolean isModified) {

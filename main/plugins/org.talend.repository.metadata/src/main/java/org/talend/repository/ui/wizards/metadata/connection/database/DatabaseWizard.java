@@ -389,16 +389,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
                 try {
                     dbService.dbWizardPerformFinish(connectionItem, databaseWizardPage.getForm(), isCreation(), pathToSave, new ArrayList<IMetadataTable>(),contextName);
                     boolean isNameModified = propertiesWizardPage.isNameModifiedByUser();
-                    if (isNameModified) {
-                        if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-                            IDesignerCoreService service = GlobalServiceRegister.getDefault()
-                                    .getService(IDesignerCoreService.class);
-                            if (service != null) {
-                                service.refreshComponentView(connectionItem);
-                            }
-                        }
-
-                    }
+                    refreshInFinish(isNameModified);
                     closeLockStrategy();
                 } catch (CoreException e) {
                     new ErrorDialogWidthDetailArea(getShell(), PID, Messages.getString("CommonWizard.persistenceException"), //$NON-NLS-1$
@@ -668,16 +659,7 @@ public class DatabaseWizard extends CheckLastVersionRepositoryWizard implements 
         }
         // ~
         
-        if (isNameModified) {
-            if (GlobalServiceRegister.getDefault().isServiceRegistered(IDesignerCoreService.class)) {
-                IDesignerCoreService service = GlobalServiceRegister.getDefault().getService(
-                        IDesignerCoreService.class);
-                if (service != null) {
-                    service.refreshComponentView(connectionItem);
-                }
-            }
-            
-        }
+        refreshInFinish(isNameModified);
     }
     
     /**

@@ -620,11 +620,6 @@ public final class OtherConnectionContextUtils {
                 }
             }
         }
-        // Create sap context parameters for additional properties
-        for (AdditionalConnectionProperty sapProperty : conn.getAdditionalProperties()) {
-            String sapPropertyContextName = getValidSapContextName(sapProperty.getPropertyName());
-            ConnectionContextHelper.createParameters(varList, sapPropertyContextName, sapProperty.getValue());
-        }
 
         return varList;
     }
@@ -652,7 +647,6 @@ public final class OtherConnectionContextUtils {
                 setSAPConnnectionBasicPropertiesForContextMode(sapCon, sapParam, sapVariableName);
             }
         }
-        setSAPConnectionAdditionPropertiesForContextMode(sapCon);
     }
 
     static void setSAPConnectionPropertiesForExistContextMode(SAPConnection sapConn, Set<IConnParamName> paramSet,
@@ -682,7 +676,6 @@ public final class OtherConnectionContextUtils {
                 setSAPConnnectionBasicPropertiesForContextMode(sapConn, sapParam, sapVariableName);
             }
         }
-        setSAPConnectionAdditionPropertiesForContextMode(sapConn);
     }
 
     static void setSAPConnnectionBasicPropertiesForContextMode(SAPConnection sapConn, EParamName sapParam,
@@ -735,12 +728,6 @@ public final class OtherConnectionContextUtils {
         }
     }
 
-    static void setSAPConnectionAdditionPropertiesForContextMode(SAPConnection sapConn) {
-        for (AdditionalConnectionProperty sapProperty : sapConn.getAdditionalProperties()) {
-            String sapPropertyContextName = getValidSapContextName(sapProperty.getPropertyName());
-            sapProperty.setValue(ContextParameterUtils.getNewScriptCode(sapPropertyContextName, LANGUAGE));
-        }
-    }
 
     static void revertSAPPropertiesForContextMode(SAPConnection conn, ContextType contextType) {
         String client = TalendQuoteUtils.removeQuotes(ConnectionContextHelper.getOriginalValue(contextType, conn.getClient()));

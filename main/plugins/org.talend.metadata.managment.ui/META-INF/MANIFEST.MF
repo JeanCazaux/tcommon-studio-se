@@ -34,7 +34,7 @@ Require-Bundle: org.eclipse.ui,
  org.talend.daikon,
  org.talend.libraries.apache,
  org.talend.studio.studio-utils,
- avro;bundle-version="1.11.2"
+ avro
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: .Talend SA.
 Bundle-Localization: plugin

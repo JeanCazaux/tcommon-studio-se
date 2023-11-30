@@ -205,7 +205,12 @@ public class LibraryDataService {
                     }
                     Map<String, Object> properties = resolveDescProperties(artifact, false);
                     if (properties != null && properties.size() > 0) {
-                        parseDescriptorResult(libraryObj, properties, false);
+                        //if the type is provided in mvnUrl, will not be replaced with the descriptor one.
+                        boolean usePomPackingType = true;
+                        if (!StringUtils.isBlank(MavenUrlHelper.parseMvnUrl(mvnUrl, false).getType())) {
+                            usePomPackingType = false;
+                        }
+                        parseDescriptorResult(libraryObj, properties, false, usePomPackingType);
                         if (libraryObj.getLicenses().size() == 0) {
                             libraryObj.setLicenseMissing(true);
                             libraryObj.getLicenses().add(unknownLicense);
@@ -315,10 +320,15 @@ public class LibraryDataService {
     }
 
     private void parseDescriptorResult(Library libraryObj, Map<String, Object> properties, boolean is4Parent) throws Exception {
+        parseDescriptorResult(libraryObj, properties, is4Parent, true);
+    }
+
+    private void parseDescriptorResult(Library libraryObj, Map<String, Object> properties, boolean is4Parent, boolean usePomPackagingType) throws Exception {
         if (properties.size() == 0) {
             libraryObj.setPomMissing(true);
         }
-        if (!is4Parent) {
+        //If packaging type is provided in mvnUrl,  not use the <packaging> setting in pom.xml.
+        if (!is4Parent && usePomPackagingType) {
             String type = String.valueOf(properties.get("type"));
             libraryObj.setType(MavenConstants.PACKAGING_BUNDLE.equalsIgnoreCase(type) ? MavenConstants.PACKAGING_JAR : type); //$NON-NLS-1$
         }

@@ -6,7 +6,7 @@
               context="plugin:org.talend.libraries.jexcel"
               language="java"
               message="Needed for jexcel component"
-              name="jxl.jar" mvn_uri="mvn:org.talend.libraries/jxl/6.0.0" 
+              name="jxl-2.6.12.jar" mvn_uri="mvn:net.sourceforge.jexcelapi/jxl/2.6.12"
               required="true">
         </libraryNeeded>
       <libraryNeeded

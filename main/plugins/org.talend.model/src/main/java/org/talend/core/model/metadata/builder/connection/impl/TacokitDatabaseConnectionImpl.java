@@ -120,7 +120,10 @@ public class TacokitDatabaseConnectionImpl extends DatabaseConnectionImpl implem
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put(KEY_DRIVER_PATH, driverJar);
             map.put(KEY_DRIVER_NAME, null);
-            drivers.add(map);
+            // TDQ-21562: fix add twice when import the project from login
+            if (!drivers.contains(map)) {
+                drivers.add(map);
+            }
         }
         this.getProperties().put(KEY_DRIVER, drivers.toString());
     }

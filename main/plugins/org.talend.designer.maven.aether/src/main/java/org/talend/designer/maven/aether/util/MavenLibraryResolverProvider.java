@@ -31,6 +31,7 @@ import org.apache.maven.wagon.providers.http.LightweightHttpsWagon;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
+import org.codehaus.plexus.util.ReaderFactory;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
@@ -158,8 +159,8 @@ public class MavenLibraryResolverProvider {
         if (result != null && result.isResolved()) {
             properties = new HashMap<String, Object>();
             MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(result.getArtifact().getFile()));
-            // Model model = MavenPlugin.getMavenModelManager().readMavenModel(result.getArtifact().getFile());
+            
+            Model model = reader.read(ReaderFactory.newXmlReader(result.getArtifact().getFile()));
             if (model != null) {
                 properties.put("type", model.getPackaging()); //$NON-NLS-1$
 

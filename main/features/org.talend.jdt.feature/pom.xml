@@ -9,4 +9,32 @@
   </parent>
   <artifactId>org.talend.jdt.feature</artifactId>
   <packaging>eclipse-feature</packaging>
+
+<repositories>
+    <repository>
+        <id>eclipse</id>
+        <url>https://download.eclipse.org/releases/2023-06/</url>
+        <layout>p2</layout>
+    </repository>
+</repositories>
+
+<build>
+  <plugins>
+      <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>target-platform-configuration</artifactId>
+          <version>${tycho.version}</version>
+          <configuration combine.self="override">
+              <executionEnvironmentDefault>JavaSE-17</executionEnvironmentDefault>
+              <environments>
+                  <environment>
+                      <os>${osgi.os}</os>
+                      <ws>${osgi.ws}</ws>
+                      <arch>${osgi.arch}</arch>
+                  </environment>
+              </environments>
+          </configuration>
+      </plugin>
+  </plugins>
+</build>
 </project>

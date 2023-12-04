@@ -1723,11 +1723,11 @@ public class ProjectRepositoryNode extends RepositoryNode implements IProjectRep
                 DatabaseConnectionItem connectionItem = (DatabaseConnectionItem) item;
                 DatabaseConnection connection = (DatabaseConnection) connectionItem.getConnection();
                 if (PluginChecker.isCDCPluginLoaded()) {
-                    ICDCProviderService service = GlobalServiceRegister.getDefault().getService(ICDCProviderService.class);
-
+                    ICDCProviderService service = GlobalServiceRegister.getDefault()
+                            .getService(ICDCProviderService.class);
                     if (service != null && service.canCreateCDCConnection(connection)) {
                         RepositoryNode cdcNode = new StableRepositoryNode(node,
-                                Messages.getString("ProjectRepositoryNode.cdcFoundation.deprecated"), //$NON-NLS-1$
+                                Messages.getString("ProjectRepositoryNode.cdcFoundation"), //$NON-NLS-1$
                                 ECoreImage.FOLDER_CLOSE_ICON);
                         node.getChildren().add(cdcNode);
                         service.createCDCTypes(recBinNode, cdcNode, connection.getCdcConns());

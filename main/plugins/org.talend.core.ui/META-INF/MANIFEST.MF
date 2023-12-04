@@ -35,7 +35,6 @@ Require-Bundle: org.apache.commons.lang,
  org.apache.commons.io,
  org.apache.httpcomponents.httpcore,
  org.apache.httpcomponents.httpclient,
- org.slf4j.api,
  org.apache.ant,
  org.eclipse.m2e.maven.runtime,
  org.eclipse.equinox.common,
@@ -56,7 +55,8 @@ Require-Bundle: org.apache.commons.lang,
  org.eclipse.jface.notifications,
  org.eclipse.swt,
  javax.inject
-Import-Package: org.eclipse.jdt.internal.ui.workingsets
+Import-Package: org.eclipse.jdt.internal.ui.workingsets,
+ org.slf4j
 Export-Package: org.talend.core.ui,
  org.talend.core.ui.actions,
  org.talend.core.ui.advanced.composite,

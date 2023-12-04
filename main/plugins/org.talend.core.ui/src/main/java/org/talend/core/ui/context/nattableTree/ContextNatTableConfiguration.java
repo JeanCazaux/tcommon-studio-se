@@ -39,6 +39,7 @@ import org.eclipse.nebula.widgets.nattable.style.CellStyleUtil;
 import org.eclipse.nebula.widgets.nattable.style.DisplayMode;
 import org.eclipse.nebula.widgets.nattable.style.HorizontalAlignmentEnum;
 import org.eclipse.nebula.widgets.nattable.style.Style;
+import org.eclipse.nebula.widgets.nattable.style.VerticalAlignmentEnum;
 import org.eclipse.nebula.widgets.nattable.ui.util.CellEdgeEnum;
 import org.eclipse.nebula.widgets.nattable.util.GUIHelper;
 import org.eclipse.swt.graphics.Color;
@@ -132,6 +133,7 @@ public class ContextNatTableConfiguration extends AbstractRegistryConfiguration 
         Style valueCellStyleDefault = new Style();
         valueCellStyleDefault.setAttributeValue(CellStyleAttributes.BACKGROUND_COLOR, ColorConstants.getTableBackgroundColor());
         valueCellStyleDefault.setAttributeValue(CellStyleAttributes.HORIZONTAL_ALIGNMENT, HorizontalAlignmentEnum.LEFT);
+        valueCellStyleDefault.setAttributeValue(CellStyleAttributes.VERTICAL_ALIGNMENT, VerticalAlignmentEnum.TOP);
         configRegistry.registerConfigAttribute(CellConfigAttributes.CELL_STYLE, valueCellStyleDefault, DisplayMode.NORMAL,
                 ContextTableConstants.COLUMN_CONTEXT_VALUE);
 

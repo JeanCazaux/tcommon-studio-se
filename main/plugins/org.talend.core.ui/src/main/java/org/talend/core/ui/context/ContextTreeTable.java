@@ -454,8 +454,8 @@ public class ContextTreeTable {
 
             int currentColumnsCount = dataColumnsCount - checkColumnsPos.size() - 1;
             int averageWidth = leftWidth / currentColumnsCount;
+            GC gc = new GCFactory(natTable).createGC();
             for (int i = 0; i < dataLayer.getColumnCount(); i++) {
-                boolean findHide = false;
                 boolean findCheck = false;
                 boolean findType = false;
                 if (typeColumnPos == i) {
@@ -468,17 +468,53 @@ public class ContextTreeTable {
                         dataLayer.setColumnWidthByPosition(i, fixedCheckBoxWidth);
                     }
                 }
-                if (!findHide && !findCheck && !findType) {
-                    int colW = getColumWidth(dataLayer, i, averageWidth);
+                if (!findCheck && !findType) {
+                    int colW = getColumWidth(gc, dataLayer, i, averageWidth);
                     dataLayer.setColumnWidthByPosition(i, colW);
                 }
             }
+
+            // setColumnWidthByPosition final scaled by DPI, set height according final width
+            int upScaleMaxColumnWidth = dataLayer.upScaleColumnWidth(400);
+            for (int i = 0; i < dataLayer.getPreferredRowCount(); i++) {
+                int maxHeight = 0;
+                for (int j = 0; j < dataLayer.getColumnCount(); j++) {
+                    Object dataValueByPosition = dataLayer.getDataValueByPosition(j, i);
+                    if (dataValueByPosition == null) {
+                        continue;
+                    }
+                    String text = dataValueByPosition.toString();
+                    Point size = gc.textExtent(text, SWT.DRAW_MNEMONIC);
+                    int textWidth = size.x;
+                    int textHeight = size.y;
+                    String[] lines = text.split(TextPainter.NEW_LINE_REGEX);
+                    int columnWidth = dataLayer.getColumnWidthByPosition(j);
+                    if (textWidth >= upScaleMaxColumnWidth || lines.length > 1) {
+                        int heightCount = 0;
+                        for (String line : lines) {
+                            int lineWidth = gc.textExtent(line).x;
+                            if (lineWidth < upScaleMaxColumnWidth) {
+                                heightCount++;
+                            } else {
+                                heightCount += lineWidth / columnWidth;
+                                heightCount += lineWidth % columnWidth == 0 ? 0 : 1;
+                            }
+                        }
+                        int cellheight = textHeight * heightCount;
+                        maxHeight = Math.max(maxHeight, dataLayer.downScaleRowHeight(cellheight));
+                    } else {
+                        maxHeight = Math.max(maxHeight, textHeight);
+                    }
+                }
+                dataLayer.setRowHeightByPosition(i, maxHeight);
+            }
+
+            gc.dispose();
         }
     }
 
-    private int getColumWidth(DataLayer dataLayer, int colPos, int avgWidth) {
+    private int getColumWidth(GC gc, DataLayer dataLayer, int colPos, int avgWidth) {
         int colWidth = fixedTypeWidth;
-        GC gc = new GCFactory(natTable).createGC();
         int max = 0;
         String text = "";
         for (int i = 0; i < dataLayer.getPreferredRowCount(); i++) {
@@ -489,15 +525,10 @@ public class ContextTreeTable {
             text = dataValueByPosition.toString();
             Point size = gc.textExtent(text, SWT.DRAW_MNEMONIC);
             int textWidth = size.x;
-            // TODO width over the max, adjust height
-//            if (textWidth > 400) {
-//                dataLayer.setRowHeightByPosition(i, dataLayer.DEFAULT_ROW_HEIGHT * 3);
-//            }
             if (textWidth > max) {
                 max = textWidth;
             }
         }
-        gc.dispose();
         if (max > colWidth) {
             max = (int) (max - text.getBytes().length * 1.5);
             // TODO set a fixed max width or calculate a max width, not to fit text width

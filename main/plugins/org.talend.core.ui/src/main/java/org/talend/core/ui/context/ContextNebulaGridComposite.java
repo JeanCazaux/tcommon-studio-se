@@ -108,6 +108,8 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
     private Button manageEnvironmentsButton;
 
+    private Button wrapButton;
+
     private ContextManagerHelper helper;
 
     private List<Button> buttonList;
@@ -253,6 +255,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
         }
 
         createEnvironmentsGroup(buttonsComp);
+        wrapButton = createWrapButton(buttonsComp);
     }
 
     private void createEnvironmentsGroup(Composite parentComposite) {
@@ -545,6 +548,21 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
         selectContextVariablesPushButton.setImage(image);
         selectContextVariablesPushButton.setText(Messages.getString("ContextNebulaComposite.ManageVariablesButtonLabel")); //$NON-NLS-1$
         return selectContextVariablesPushButton;
+    }
+
+    private Button createWrapButton(final Composite parent) {
+        Button wrapToggleButton = new Button(parent, SWT.TOGGLE);
+        Image image = ImageProvider.getImage(EImage.WRAP_ICON);
+        wrapToggleButton.setImage(image);
+        wrapToggleButton.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                refresh();
+            }
+
+        });
+        return wrapToggleButton;
     }
 
     private void setButtonEnableState() {

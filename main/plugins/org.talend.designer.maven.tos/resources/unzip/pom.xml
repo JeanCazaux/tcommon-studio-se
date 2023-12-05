@@ -270,6 +270,7 @@
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
 							<outputDirectory>${basedir}/../tmp/repository</outputDirectory>
 							<useRepositoryLayout>true</useRepositoryLayout>
+							<includeGroupIds>org.talend.daikon,org.springframework.boot,com.datastax.oss,org.codehaus.groovy,com.fasterxml.jackson,org.glassfish.jersey,org.eclipse.jetty,org.jetbrains.kotlin,org.jetbrains.kotlinx,org.apache.logging.log4j,io.micrometer,io.netty,com.oracle.database.jdbc,io.prometheus,com.querydsl,io.r2dbc,io.projectreactor,io.rsocket,org.springframework.data,org.springframework,org.springframework.integration,org.springframework.security,org.springframework.session,io.dropwizard.metrics,org.infinispan,org.jboss,org.mockito,com.squareup.okhttp3,io.rest-assured,org.apache.commons,com.fasterxml.jackson</includeGroupIds>
 						</configuration>
 					</execution>
                 </executions>

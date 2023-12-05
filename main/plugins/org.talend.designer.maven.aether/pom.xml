@@ -138,11 +138,11 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-			  <excludeGroupIds>org.talend.studio</excludeGroupIds>
               <includeScope>runtime</includeScope>
               <outputDirectory>${project.basedir}/lib</outputDirectory>
               <stripVersion>true</stripVersion>
               <excludeGroupIds>org.talend.studio</excludeGroupIds>
+	      <includeGroupIds>org.slf4j,org.apache.maven.resolver,org.apache.maven.wagon,org.jsoup,commons-io,commons-codec</includeGroupIds>
             </configuration>
           </execution>
         </executions>

@@ -188,6 +188,7 @@
 							<includeScope>runtime</includeScope>
 							<useRepositoryLayout>true</useRepositoryLayout>
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
+							<includeGroupIds>com.sun.mail,org.json,com.fasterxml.jackson.dataformat,biz.aQute.bnd,org.talend.components,org.osgi,org.eclipse.sisu,javax.enterprise,org.slf4j,junit,org.codehaus.jackson</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

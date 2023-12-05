@@ -126,6 +126,7 @@
 							<useRepositoryLayout>true</useRepositoryLayout>
 							<addParentPoms>true</addParentPoms>
 							<copyPom>true</copyPom>
+							<includeGroupIds>org.talend.studio,org.apache.maven.plugins,org.apache.maven.surefire,org.apache.commons,org.apache.ant</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

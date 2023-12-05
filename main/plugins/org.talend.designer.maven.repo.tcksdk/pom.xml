@@ -444,6 +444,7 @@
 							<includeScope>runtime</includeScope>
 							<useRepositoryLayout>true</useRepositoryLayout>
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
+							<includeGroupIds>org.apache.logging.log4j,org.talend.sdk.component,org.apache.cxf,org.apache.geronimo,org.apache.geronimo.specs,org.apache.johnzon,org.apache.meecrowave,org.apache.openwebbeans,org.apache.tomcat,org.apache.xbean,org.eclipse.microprofile.opentracing,org.slf4j,ch.qos.reload4j,commons-cli,org.apache.commons</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

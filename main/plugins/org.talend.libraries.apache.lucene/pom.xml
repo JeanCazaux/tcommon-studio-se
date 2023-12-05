@@ -35,6 +35,7 @@
             </goals>
             <configuration>
                 <outputDirectory>${project.basedir}/lib</outputDirectory>
+		<includeGroupIds>org.apache.lucene</includeGroupIds>
             </configuration>
         </execution>
     </executions>

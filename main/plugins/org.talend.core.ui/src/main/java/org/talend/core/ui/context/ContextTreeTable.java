@@ -92,7 +92,9 @@ import org.eclipse.swt.widgets.Event;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.ColorConstants;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.process.IContext;
+import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -148,6 +150,8 @@ public class ContextTreeTable {
     private final static int fixedCheckBoxWidth = 100;
 
     private final static int fixedTypeWidth = 100;
+
+    private final static int maxDefaultWidth = 400;
 
     public ContextTreeTable(IContextModelManager manager) {
         this.manager = manager;
@@ -473,42 +477,8 @@ public class ContextTreeTable {
                     dataLayer.setColumnWidthByPosition(i, colW);
                 }
             }
-
             // setColumnWidthByPosition final scaled by DPI, set height according final width
-            int upScaleMaxColumnWidth = dataLayer.upScaleColumnWidth(400);
-            for (int i = 0; i < dataLayer.getPreferredRowCount(); i++) {
-                int maxHeight = 0;
-                for (int j = 0; j < dataLayer.getColumnCount(); j++) {
-                    Object dataValueByPosition = dataLayer.getDataValueByPosition(j, i);
-                    if (dataValueByPosition == null) {
-                        continue;
-                    }
-                    String text = dataValueByPosition.toString();
-                    Point size = gc.textExtent(text, SWT.DRAW_MNEMONIC);
-                    int textWidth = size.x;
-                    int textHeight = size.y;
-                    String[] lines = text.split(TextPainter.NEW_LINE_REGEX);
-                    int columnWidth = dataLayer.getColumnWidthByPosition(j);
-                    if (textWidth >= upScaleMaxColumnWidth || lines.length > 1) {
-                        int heightCount = 0;
-                        for (String line : lines) {
-                            int lineWidth = gc.textExtent(line).x;
-                            if (lineWidth < upScaleMaxColumnWidth) {
-                                heightCount++;
-                            } else {
-                                heightCount += lineWidth / columnWidth;
-                                heightCount += lineWidth % columnWidth == 0 ? 0 : 1;
-                            }
-                        }
-                        int cellheight = textHeight * heightCount;
-                        maxHeight = Math.max(maxHeight, dataLayer.downScaleRowHeight(cellheight));
-                    } else {
-                        maxHeight = Math.max(maxHeight, textHeight);
-                    }
-                }
-                dataLayer.setRowHeightByPosition(i, maxHeight);
-            }
-
+            adjustRowCellHeight(gc, dataLayer);
             gc.dispose();
         }
     }
@@ -531,12 +501,55 @@ public class ContextTreeTable {
         }
         if (max > colWidth) {
             max = (int) (max - text.getBytes().length * 1.5);
-            // TODO set a fixed max width or calculate a max width, not to fit text width
-            if (max > 400) {
-                max = 400;
+            if (max > maxDefaultWidth) {
+                max = maxDefaultWidth;
             }
         }
         return colWidth > max ? colWidth : max;
+    }
+
+    private void adjustRowCellHeight(GC gc, DataLayer dataLayer) {
+        IContextManager contextManager = manager.getContextManager();
+        if (contextManager instanceof JobContextManager) {
+            JobContextManager jobContextManager = (JobContextManager) contextManager;
+            if (!jobContextManager.isWrapContextText()) {
+                return;
+            }
+        }
+
+        int upScaleMaxColumnWidth = dataLayer.upScaleColumnWidth(maxDefaultWidth);
+        for (int i = 0; i < dataLayer.getPreferredRowCount(); i++) {
+            int maxHeight = 0;
+            for (int j = 0; j < dataLayer.getColumnCount(); j++) {
+                Object dataValueByPosition = dataLayer.getDataValueByPosition(j, i);
+                if (dataValueByPosition == null) {
+                    continue;
+                }
+                String text = dataValueByPosition.toString();
+                Point size = gc.textExtent(text, SWT.DRAW_MNEMONIC);
+                int textWidth = size.x;
+                int textHeight = size.y;
+                String[] lines = text.split(TextPainter.NEW_LINE_REGEX);
+                int columnWidth = dataLayer.getColumnWidthByPosition(j);
+                if (textWidth >= upScaleMaxColumnWidth || lines.length > 1) {
+                    int heightCount = 0;
+                    for (String line : lines) {
+                        int lineWidth = gc.textExtent(line).x;
+                        if (lineWidth < upScaleMaxColumnWidth) {
+                            heightCount++;
+                        } else {
+                            heightCount += lineWidth / columnWidth;
+                            heightCount += lineWidth % columnWidth == 0 ? 0 : 1;
+                        }
+                    }
+                    int cellheight = textHeight * heightCount;
+                    maxHeight = Math.max(maxHeight, dataLayer.downScaleRowHeight(cellheight));
+                } else {
+                    maxHeight = Math.max(maxHeight, textHeight);
+                }
+            }
+            dataLayer.setRowHeightByPosition(i, maxHeight);
+        }
     }
 
     private void addCustomSelectionBehaviour(SelectionLayer layer) {

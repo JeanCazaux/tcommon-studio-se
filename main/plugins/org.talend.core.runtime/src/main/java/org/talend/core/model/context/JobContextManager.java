@@ -45,6 +45,8 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
  */
 public class JobContextManager implements IContextManager {
 
+    private boolean isWrapContextText;
+
     private IContext defaultContext = new JobContext(IContext.DEFAULT);
 
     private List<IContext> listContext = new ArrayList<IContext>();
@@ -101,6 +103,14 @@ public class JobContextManager implements IContextManager {
     private Map<ContextItem, List<IContext>> removeContextGroupMap = new HashMap<ContextItem, List<IContext>>();
 
     private Map<ContextItem, List<IContext>> renameContextGroupMap = new HashMap<ContextItem, List<IContext>>();
+
+    public boolean isWrapContextText() {
+        return isWrapContextText;
+    }
+
+    public void setWrapContextText(boolean isWrapContextText) {
+        this.isWrapContextText = isWrapContextText;
+    }
 
     public Map<ContextItem, List<IContext>> getAddContextGroupMap() {
         return this.addContextGroupMap;

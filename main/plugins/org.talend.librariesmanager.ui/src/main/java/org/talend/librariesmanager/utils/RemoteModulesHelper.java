@@ -622,15 +622,17 @@ public class RemoteModulesHelper {
             message.put("module", child);//$NON-NLS-1$
             String url = serviceUrl + "?data=" + message;
             JSONObject resultStr = readJsonFromUrl(url);
-            JSONArray jsonArray = resultStr.getJSONArray("result");//$NON-NLS-1$
-            if (jsonArray != null) {
-                JSONObject object = jsonArray.getJSONObject(0);
-                if (object != null) {
-                    String licenseText = object.getString("licenseText");//$NON-NLS-1$
-                    if (licenseText != null) {
-                        licenseText.replace("http://", "https://");//$NON-NLS-1$ //$NON-NLS-2$
+            if (resultStr != null) {
+                JSONArray jsonArray = resultStr.getJSONArray("result");//$NON-NLS-1$
+                if (jsonArray != null) {
+                    JSONObject object = jsonArray.getJSONObject(0);
+                    if (object != null) {
+                        String licenseText = object.getString("licenseText");//$NON-NLS-1$
+                        if (licenseText != null) {
+                            licenseText.replace("http://", "https://");//$NON-NLS-1$ //$NON-NLS-2$
+                        }
+                        return licenseText;
                     }
-                    return licenseText;
                 }
             }
         } catch (JSONException e) {

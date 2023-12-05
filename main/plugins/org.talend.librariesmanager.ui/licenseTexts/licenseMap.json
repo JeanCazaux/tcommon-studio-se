@@ -1,6 +1,7 @@
 [
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/PUBLIC_DOMAIN.txt","licenseName":"PUBLIC_DOMAIN"},
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/APACHE_v2.txt","licenseName":"Apache-2.0"},
+	{"licenseUrl":"http://www.talendforge.org/modules/licenses/APACHE_v1.1.txt","licenseName":"Apache-1.1"},
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/Oracle-Binary.txt","licenseName":"Oracle-Binary"},
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/BSD_v2.txt","licenseName":"BSD-2-Clause"},
 	{"licenseUrl":"http://www.talendforge.org/modules/licenses/BSD_v3.txt","licenseName":"BSD-3-Clause"},

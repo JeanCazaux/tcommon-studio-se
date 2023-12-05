@@ -40,6 +40,7 @@ import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import org.talend.librariesmanager.ui.dialogs.ConfigModuleDialog;
 import org.talend.librariesmanager.ui.i18n.Messages;
 import org.talend.librariesmanager.ui.service.RoutineProviderManager;
+import org.talend.librariesmanager.utils.LicenseTextUtil;
 import org.talend.librariesmanager.utils.ModulesInstaller;
 
 /**
@@ -187,5 +188,9 @@ public class LibraryManagerUIService implements ILibraryManagerUIService {
 
     public IConfigModuleDialog getConfigModuleDialog(Shell parentShell, String initValue, boolean allowDetectDependencies) {
         return new ConfigModuleDialog(parentShell, initValue, allowDetectDependencies);
+    }
+
+    public String getLicenseUrlByName(String licenceName) {
+        return LicenseTextUtil.getLicenseUrlByName(licenceName);
     }
 }

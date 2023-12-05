@@ -102,6 +102,15 @@ public class LicenseTextUtil {
         return null;
     }
 
+    public static String getLicenseUrlByName(String name) {
+        for (String url : licenseMap.keySet()) {
+            if (name != null && name.equalsIgnoreCase(licenseMap.get(url))) {
+                return url;
+            }
+        }
+        return "";
+    }
+
     private static String getStringFromText(File file) throws Exception {
         StringBuilder sb = new StringBuilder();
         List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);

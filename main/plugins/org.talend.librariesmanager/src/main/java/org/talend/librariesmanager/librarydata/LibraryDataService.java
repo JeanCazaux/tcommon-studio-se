@@ -153,8 +153,14 @@ public class LibraryDataService {
     }
 
     public void buildLibraryLicenseData(Set<String> mvnUrlList) {
+        buildLibraryLicenseData(mvnUrlList, null);
+    }
+
+    public void buildLibraryLicenseData(Set<String> mvnUrlList, Map<String, List<String[]>> licenseMap) {
         for (String mvnUrl : mvnUrlList) {
-            Library libraryObj = resolve(mvnUrl);
+            Library libraryObj = getLicenseDataFromMap(mvnUrl, licenseMap);
+            if (libraryObj == null)
+                libraryObj = resolve(mvnUrl);
             if (!libraryObj.isLicenseMissing() || !libraryObj.isPomMissing()) {
                 mvnToLibraryMap.put(getShortMvnUrl(mvnUrl), libraryObj);
             }
@@ -171,10 +177,10 @@ public class LibraryDataService {
                     isRemoved = true;
                 }
             }
-            if(lib.isPomMissing()) {
+            if (lib.isPomMissing()) {
                 lib.getLicenses().clear();
                 lib.getLicenses().add(unknownLicense);
-            }else {
+            } else {
                 if ((isRemoved && licenses.size() == 0)) {
                     licenses.add(unknownLicense);
                     lib.setLicenseMissing(true);
@@ -182,6 +188,38 @@ public class LibraryDataService {
             }
         }
         dataProvider.saveLicenseData(mvnToLibraryMap);
+    }
+    
+    private Library getLicenseDataFromMap(String mvnUrl, Map<String, List<String[]>> licenseMap) {
+        if (licenseMap == null)
+            return null;
+        MavenArtifact artifact = MavenUrlHelper.parseMvnUrl(mvnUrl);
+        String shourtMvnUrl = getShortMvnUrl(mvnUrl);
+        String gav = String.format("%s:%s:%s", artifact.getGroupId(), artifact.getArtifactId(), artifact.getVersion());
+        List<String[]> licenses = licenseMap.get(gav);
+        Library libraryObj = null;
+        if (licenses != null && licenses.size() > 0) {
+            libraryObj = new Library();
+            libraryObj.setGroupId(artifact.getGroupId());
+            libraryObj.setArtifactId(artifact.getArtifactId());
+            libraryObj.setVersion(artifact.getVersion());
+            libraryObj.setMvnUrl(shourtMvnUrl);
+            libraryObj.setType(artifact.getType());
+            libraryObj.setClassifier(artifact.getClassifier());
+            libraryObj.setPomMissing(false);
+            for (String[] licenseContent : licenses) {
+                LibraryLicense license = new LibraryLicense();
+                if (licenseContent != null && licenseContent.length == 2) {
+                    license.setName(licenseContent[0]);
+                    license.setUrl(licenseContent[1]);
+                }
+                libraryObj.getLicenses().add(license);
+            }
+        } else {
+            return null;
+        }
+
+        return libraryObj;
     }
 
     private Library resolve(String mvnUrl) {

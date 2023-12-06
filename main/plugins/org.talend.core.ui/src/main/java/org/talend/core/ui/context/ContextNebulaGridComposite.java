@@ -235,7 +235,7 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
                 && ((ContextComposite) modelManager).isRepositoryContext();
         int columnNum = isRepositoryContext ? 5 : 7;
         buttonsComp = new Composite(parentComposite, SWT.NULL);
-        buttonsComp.setLayout(GridLayoutFactory.swtDefaults().spacing(5, 0).margins(5, 0).numColumns(columnNum).create());
+        buttonsComp.setLayout(GridLayoutFactory.swtDefaults().spacing(10, 0).margins(5, 0).numColumns(columnNum).create());
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.DOWN).grab(true, false).applyTo(buttonsComp);
         buttonList.clear();
         addButton = createAddPushButton(buttonsComp);
@@ -261,10 +261,11 @@ public class ContextNebulaGridComposite extends AbstractContextTabEditComposite 
 
     private void createEnvironmentsGroup(Composite parentComposite) {
         Composite environmentsComp = new Composite(parentComposite, SWT.NULL);
-        environmentsComp.setLayout(new GridLayout(2, false));
+        GridLayout gridLayout = new GridLayout(2, false);
+        gridLayout.horizontalSpacing = 10;
+        environmentsComp.setLayout(gridLayout);
         GridData contextComboData = new GridData();
         contextComboData.grabExcessHorizontalSpace = true;
-        contextComboData.horizontalAlignment = GridData.END;
         environmentsComp.setLayoutData(contextComboData);
 
         viewEnvironmentsCombo = new CCombo(environmentsComp, SWT.BORDER);

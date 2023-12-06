@@ -24,6 +24,7 @@ import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorColumnNot
 import org.talend.commons.ui.runtime.swt.tableviewer.TableViewerCreatorNotModifiable;
 import org.talend.commons.ui.runtime.swt.tableviewer.behavior.ITableCellValueModifiedListener;
 import org.talend.commons.ui.runtime.swt.tableviewer.data.AccessorUtils;
+import org.talend.commons.ui.swt.dnd.DNDTableViewerHelper;
 import org.talend.commons.ui.swt.extended.table.ModifyBeanValueCommand;
 import org.talend.commons.ui.swt.proposal.ExtendedTextCellEditorWithProposal;
 import org.talend.commons.ui.swt.tableviewer.behavior.DefaultCellModifier;
@@ -148,6 +149,9 @@ public class TableViewerCreator<B> extends TableViewerCreatorNotModifiable<B> im
     @Override
     public Table createTable() {
         Table table = super.createTable();
+        
+        DNDTableViewerHelper.addDndSupport(getTableViewer());
+        
         initCellModifier();
 
         return table;

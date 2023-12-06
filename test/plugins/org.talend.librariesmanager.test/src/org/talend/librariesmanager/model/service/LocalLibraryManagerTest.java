@@ -188,7 +188,7 @@ public class LocalLibraryManagerTest {
     @Test
     public void testRetrieveStringStringIProgressMonitorArray() throws IOException {
         String pathToStore = LibrariesManagerUtils.getLibrariesPath(ECodeLanguage.JAVA);
-        String jarNeeded = "mysql-connector-java-5.1.0-bin.jar";
+        String jarNeeded = "mysql-connector-java-5.1.13.jar";
         String sourcePath = null, targetPath = pathToStore;
         List<File> jarFiles = FilesUtils.getJarFilesFromFolder(getStorageDirectory(), jarNeeded);
         if (jarFiles.size() > 0) {

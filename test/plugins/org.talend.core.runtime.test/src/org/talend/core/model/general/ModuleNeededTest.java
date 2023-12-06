@@ -72,9 +72,9 @@ public class ModuleNeededTest {
         Assert.assertEquals(module1.getMavenURIFromConfiguration(), "mvn:org.talend.libraries/test1/6.1.0/exe");
         Assert.assertEquals(module1.getMavenUri(), "mvn:org.talend.libraries/test1/6.1.0/exe");
 
-        ModuleNeeded module2 = new ModuleNeeded("tMysqlInput", "mysql-connector-java-5.1.30-bin.jar", null, false);
+        ModuleNeeded module2 = new ModuleNeeded("tMysqlInput", "mysql-connector-java-5.1.30.jar", null, false);
         Assert.assertEquals(module2.getMavenURIFromConfiguration(), null);
-        Assert.assertEquals(module2.getMavenUri(), "mvn:org.talend.libraries/mysql-connector-java-5.1.30-bin/6.0.0/jar");
+        Assert.assertEquals(module2.getMavenUri(), "mvn:mysql/mysql-connector-java/5.1.30/jar");
 
         // jar not in configuration
         ModuleNeeded module3 = new ModuleNeeded("tMysqlInput", "ModuleNeededTest.jar", null, false);
@@ -161,9 +161,9 @@ public class ModuleNeededTest {
         Assert.assertEquals(moduleValue, moduleNeeded.getModuleName());
 
 
-        moduleValue = "mysql-connector-java-5.1.30-bin.jar";
+        moduleValue = "mysql-connector-java-5.1.30.jar";
         moduleNeeded.setModuleName(moduleValue);
-        Assert.assertEquals("mysql-connector-java-5.1.30-bin.jar", moduleNeeded.getModuleName());
+        Assert.assertEquals("mysql-connector-java-5.1.30.jar", moduleNeeded.getModuleName());
     }
 
 }

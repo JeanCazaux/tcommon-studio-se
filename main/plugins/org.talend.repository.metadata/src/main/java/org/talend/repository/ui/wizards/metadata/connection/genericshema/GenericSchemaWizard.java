@@ -404,9 +404,7 @@ public class GenericSchemaWizard extends CheckLastVersionRepositoryWizard implem
                     updateConnectionItem();
                     // 0005170: Schema renamed - new name not pushed out to dependant jobs
                     boolean isModified = genericSchemaWizardPage0.isNameModifiedByUser();
-                    if (isModified) {
-                        CoreRuntimePlugin.getInstance().getDesignerCoreService().refreshComponentView(connectionItem);
-                    }
+                    refreshInFinish(isModified);
                 }
             } catch (Exception e) {
                 String detailError = e.toString();

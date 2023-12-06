@@ -5,6 +5,6 @@ Bundle-SymbolicName: org.talend.libraries.javacsv;singleton:=true
 Bundle-Version: 8.0.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- lib/javacsv.jar
+ lib/javacsv-2.0.jar;mvn:net.sourceforge.javacsv/javacsv/2.0
 Export-Package: com.csvreader
 Eclipse-BundleShape: dir

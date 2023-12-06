@@ -5,7 +5,7 @@ Bundle-Name: Jboss
 Bundle-SymbolicName: org.talend.libraries.jboss;singleton:=true
 Bundle-Version: 8.0.1.qualifier
 Bundle-ClassPath: .,
- lib/trove.jar,
+ lib/trove-1.0.2.jar;mvn:trove/trove/1.0.2,
  lib/jboss-serialization.jar
 Eclipse-BuddyPolicy: registered
 Export-Package: org.jboss.serial,

@@ -20,7 +20,10 @@ Export-Package:
  org.talend.utils.ssl;uses:="javax.net.ssl",
  org.talend.utils.wsdl,
  org.talend.utils.xml
-Import-Package: org.slf4j
+Import-Package: org.slf4j,
+ org.slf4j.event,
+ org.slf4j.helpers,
+ org.slf4j.spi
 Bundle-ClassPath: .
 Require-Bundle: org.apache.commons.lang,
  org.talend.libraries.apache,

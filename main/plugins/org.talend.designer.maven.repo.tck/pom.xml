@@ -163,7 +163,7 @@
 							<includeScope>runtime</includeScope>
 							<useRepositoryLayout>true</useRepositoryLayout>
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
-							<includeGroupIds>org.talend.components,com.fasterxml.jackson.core,com.google.code.findbugs,com.thoughtworks.paranamer,javax.inject,javax.servlet,org.apache.avro,org.tukaani,org.slf4j<includeGroupIds>
+							<includeGroupIds>org.talend.components,com.fasterxml.jackson.core,com.google.code.findbugs,com.thoughtworks.paranamer,javax.inject,javax.servlet,org.apache.avro,org.tukaani,org.slf4j</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

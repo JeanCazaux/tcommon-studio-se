@@ -1085,7 +1085,7 @@ public class ProcessorUtilities {
                 if (childBuildType == null) {
                     Property parentProperty = parentJobInfo.getProcessor().getProperty();
                     String parentBuildType = (String)parentProperty.getAdditionalProperties().get(TalendProcessArgumentConstant.ARG_BUILD_TYPE);
-                    if ("ROUTE".equalsIgnoreCase(parentBuildType)) {
+                    if (parentBuildType!= null && parentBuildType.contains("ROUTE")) {
                     	childProperty.getAdditionalProperties().put(TalendProcessArgumentConstant.ARG_BUILD_TYPE, "OSGI");
                     }
                 }

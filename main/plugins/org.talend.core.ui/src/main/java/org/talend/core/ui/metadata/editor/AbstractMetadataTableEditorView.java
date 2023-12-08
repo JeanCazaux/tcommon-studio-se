@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -341,7 +342,11 @@ public abstract class AbstractMetadataTableEditorView<B> extends AbstractDataTab
         column.setBeanPropertyAccessors(getRowNumAccessor());
         column.setWeight(5);
         column.setModifiable(false);
-        column.setMinimumWidth(10);
+        if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+            column.setMinimumWidth(10);
+        } else {
+            column.setMinimumWidth(30);
+        }
         column.setSortable(true);
     }
 

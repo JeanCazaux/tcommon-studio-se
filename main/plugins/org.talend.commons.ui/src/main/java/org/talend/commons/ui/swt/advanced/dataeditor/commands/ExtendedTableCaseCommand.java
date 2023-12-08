@@ -52,7 +52,7 @@ public abstract class ExtendedTableCaseCommand extends Command implements IExten
     @Override
     public void execute() {
         convertCase(extendedTable, beansToCovertCase, selectionIndices, isUpperCase);
-        
+        extendedTable.getTableViewer().refresh();
     }
     
     public abstract void convertCase(ExtendedTableModel extendedTable, List copiedObjectsList, int[] selectionIndices, boolean isUpperCase);

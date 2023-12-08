@@ -14,6 +14,7 @@ package org.talend.commons.ui.swt.advanced.dataeditor.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.gef.commands.Command;
 import org.talend.commons.ui.runtime.i18n.Messages;
 import org.talend.commons.ui.swt.extended.table.ExtendedTableModel;
@@ -54,7 +55,7 @@ public abstract class ExtendedTableQuoteCommand extends Command implements IExte
     @Override
     public void execute() {
         toQuote(extendedTable, beansToQuote, selectionIndices, quote, isAddingQuote);
-        
+        extendedTable.getTableViewer().refresh();
     }
     
     public abstract void toQuote(ExtendedTableModel extendedTable, List copiedObjectsList, int[] selectionIndices, String quote, boolean isAddingQuote);

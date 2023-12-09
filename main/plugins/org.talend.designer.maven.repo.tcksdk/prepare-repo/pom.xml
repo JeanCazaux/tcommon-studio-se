@@ -6,7 +6,7 @@
 		<artifactId>studio-deps-bom</artifactId>
 		<version>8.8.8-SNAPSHOT</version>
 	</parent>
-	<artifactId>org.talend.designer.maven.repo.tcksdk-maven-repo</artifactId>
+	<artifactId>org.talend.designer.maven.repo.tcksdk.prepare-repo</artifactId>
 	<packaging>pom</packaging>
 	<properties>
 		<tcomp.version>${component-runtime.version}</tcomp.version>

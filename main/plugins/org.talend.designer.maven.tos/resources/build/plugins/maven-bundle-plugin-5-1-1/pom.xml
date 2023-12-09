@@ -165,6 +165,7 @@
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
 							<outputDirectory>${basedir}/../../../tmp/repository</outputDirectory>
 							<useRepositoryLayout>true</useRepositoryLayout>
+							<includeGroupIds>org.slf4j,org.apache.felix,org.apache.velocity,org.codehaus.plexus,org.apache.commons,org.apache.ant,org.apache.maven.shared,commons-io,org.bouncycastle,com.fasterxml.jackson.core,com.thoughtworks.xstream,org.apache.maven,org.apache.commons</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

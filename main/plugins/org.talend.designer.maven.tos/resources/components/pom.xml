@@ -133,6 +133,7 @@
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
 							<outputDirectory>${basedir}/../tmp/repository</outputDirectory>
 							<useRepositoryLayout>true</useRepositoryLayout>
+							<includeGroupIds>com.sun.mail,org.json,com.fasterxml.jackson.dataformat,org.apache.commons,biz.aQute.bnd,org.talend.components,org.osgi,org.eclipse.sisu,javax.enterprise,org.slf4j,junit,org.codehaus.jackson</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

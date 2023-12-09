@@ -124,6 +124,7 @@
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
 							<outputDirectory>${basedir}/../tmp/repository</outputDirectory>
 							<useRepositoryLayout>true</useRepositoryLayout>
+							<includeGroupIds>org.apache.maven.surefire,org.hamcrest,junit,org.apache.httpcomponents,org.eclipse.tycho,org.apache.maven.plugins,org.apache.maven.shared,org.slf4j,org.apache.maven,com.google.guava,commons-io,org.apache.commons</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

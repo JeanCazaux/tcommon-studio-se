@@ -126,8 +126,26 @@
 							<useRepositoryLayout>true</useRepositoryLayout>
 							<addParentPoms>true</addParentPoms>
 							<copyPom>true</copyPom>
+							<includeGroupIds>org.apache.maven.plugins,org.apache.maven.surefire,org.apache.commons,org.apache.ant</includeGroupIds>
 						</configuration>
 					</execution>
+					<execution>
+                        		  <id>copy-studio-lib</id>
+                        	          <phase>package</phase>
+                        		  <goals>
+                              			<goal>copy</goal>
+                        		  </goals>
+                        		  <configuration>
+                              			<outputDirectory>${basedir}/../tmp/repository</outputDirectory>
+                              			<artifactItems>
+                                    			<artifactItem>
+                                           			<groupId>org.talend.studio</groupId>
+                                           			<artifactId>org.talend.utils</artifactId>
+                                           			<version>${project.version}</version>
+                                    			</artifactItem>
+                              			</artifactItems>
+                       			  </configuration>
+                                   </execution>
 				</executions>
 			</plugin>
 		</plugins>

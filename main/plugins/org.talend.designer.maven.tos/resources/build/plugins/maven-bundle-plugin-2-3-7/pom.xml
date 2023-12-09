@@ -89,6 +89,7 @@
 							<excludeGroupIds>p2.eclipse-plugin,org.talend.studio</excludeGroupIds>
 							<outputDirectory>${basedir}/../../../tmp/repository</outputDirectory>
 							<useRepositoryLayout>true</useRepositoryLayout>
+							<includeGroupIds>org.apache.felix,commons-io,org.osgi,org.apache.maven,org.apache.commons</includeGroupIds>
 						</configuration>
 					</execution>
 				</executions>

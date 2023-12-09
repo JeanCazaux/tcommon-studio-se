@@ -111,13 +111,11 @@
 		<module>main/plugins/org.talend.designer.maven.ui</module>
 		<module>main/plugins/org.talend.themes.core</module>
 		<module>main/plugins/org.talend.themes.css.talend</module>
-		<module>main/plugins/org.talend.designer.maven.tos/resources</module>
-		<module>main/plugins/org.talend.designer.maven.tos</module>
 		<module>main/plugins/org.talend.signon.util</module>
 
-		<module>main/plugins/org.talend.designer.maven.repo.tck</module>
+		<module>main/plugins/org.talend.designer.maven.repo.tck.aggregator</module>
         <module>main/plugins/org.talend.designer.maven.repo.tcksdk/aggregator</module>
-		<module>main/plugins/org.talend.designer.maven.repo.tcompv0</module>
+		<module>main/plugins/org.talend.designer.maven.repo.tcompv0.aggregator</module>
 
 		<module>main/plugins/org.talend.libraries.persist.lookup</module>
 		<module>main/plugins/org.talend.designer.maven.aether</module>

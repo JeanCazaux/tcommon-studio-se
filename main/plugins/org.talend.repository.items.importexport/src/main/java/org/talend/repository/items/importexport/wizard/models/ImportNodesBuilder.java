@@ -34,6 +34,7 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.RoutinesJarItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.routines.RoutinesUtil;
+import org.talend.core.repository.utils.RepositoryNodeManager;
 import org.talend.core.ui.ITestContainerProviderService;
 import org.talend.repository.items.importexport.handlers.model.EmptyFolderImportItem;
 import org.talend.repository.items.importexport.handlers.model.ImportItem;
@@ -282,7 +283,7 @@ public class ImportNodesBuilder {
     }
 
     private TypeImportNode findAndCreateParentTypeNode(ProjectImportNode projectNode, ERepositoryObjectType curType) {
-        if (curType == ERepositoryObjectType.METADATA_TACOKIT_JDBC || curType == ERepositoryObjectType.SNOWFLAKE) {
+        if (curType == ERepositoryObjectType.METADATA_TACOKIT_JDBC || RepositoryNodeManager.isSnowflake(curType)) {
             curType = ERepositoryObjectType.METADATA_CONNECTIONS;
         }
         ERepositoryObjectType parentParentType = ERepositoryObjectType.findParentType(curType);

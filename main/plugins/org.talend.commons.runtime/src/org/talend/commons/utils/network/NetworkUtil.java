@@ -24,6 +24,7 @@ import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -31,6 +32,10 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.eclipse.core.internal.net.ProxyManager;
+import org.eclipse.core.net.proxy.IProxyData;
+import org.eclipse.core.net.proxy.IProxyService;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.talend.commons.exception.CommonExceptionHandler;
@@ -41,6 +46,8 @@ import org.talend.commons.runtime.utils.io.FileCopyUtils;
  * ggu class global comment. Detailled comment
  */
 public class NetworkUtil {
+
+    private static final Logger LOGGER = Logger.getLogger(NetworkUtil.class);
 
     private static final String[] windowsCommand = { "ipconfig", "/all" }; //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -71,6 +78,136 @@ public class NetworkUtil {
     private static final String PROP_HTTP_PROXY_SET = "http.proxySet";
 
     private static final String PROP_NETWORK_STATUS = "network.status"; //$NON-NLS-1$
+
+    private static final String SYSTEM_PROXY_ENABLED = "talend.studio.proxy.enableSystemProxyByDefault";
+
+    public static void applyProxyFromSystemProperties() throws Exception {
+        if (!Boolean.valueOf(System.getProperty("talend.studio.proxy.applySystemProps", Boolean.FALSE.toString()))) {
+            return;
+        }
+        final String passwordMask = "***";
+        String httpProxyHost = System.getProperty("http.proxyHost");
+        String httpProxyPort = System.getProperty("http.proxyPort");
+        String httpUser = System.getProperty("http.proxyUser");
+        String httpPassword = System.getProperty("http.proxyPassword");
+        if (StringUtils.isNotBlank(httpPassword)) {
+            System.setProperty("http.proxyPassword", passwordMask);
+        }
+        String httpNonProxyHosts = System.getProperty("http.nonProxyHosts");
+        String httpsProxyHost = System.getProperty("https.proxyHost");
+        String httpsProxyPort = System.getProperty("https.proxyPort");
+        String httpsUser = System.getProperty("https.proxyUser");
+        String httpsPassword = System.getProperty("https.proxyPassword");
+        if (StringUtils.isNotBlank(httpsPassword)) {
+            System.setProperty("https.proxyPassword", passwordMask);
+        }
+        String httpsNonProxyHosts = System.getProperty("https.nonProxyHosts");
+        String socksProxyHost = System.getProperty("socksProxyHost");
+        String socksProxyPort = System.getProperty("socksProxyPort");
+        String socksProxyUser = System.getProperty("socksProxyUser");
+        if (socksProxyUser == null) {
+            socksProxyUser = System.getProperty("java.net.socks.username");
+        }
+        String socksProxyPassword = System.getProperty("socksProxyPassword");
+        if (StringUtils.isNotBlank(socksProxyPassword)) {
+            System.setProperty("socksProxyPassword", passwordMask);
+        }
+        if (socksProxyPassword == null) {
+            socksProxyPassword = System.getProperty("java.net.socks.password");
+        }
+        IProxyService proxyService = ProxyManager.getProxyManager();
+        boolean isHttpProxyEnabled = StringUtils.isNotBlank(httpProxyHost) && StringUtils.isNotBlank(httpProxyPort);
+        boolean isHttpsProxyEnabled = StringUtils.isNotBlank(httpsProxyHost) && StringUtils.isNotBlank(httpsProxyPort);
+        boolean isSocksProxyEnabled = StringUtils.isNotBlank(socksProxyHost) && StringUtils.isNotBlank(socksProxyPort);
+        if (!isHttpProxyEnabled && !isHttpsProxyEnabled && !isSocksProxyEnabled) {
+            proxyService
+                    .setSystemProxiesEnabled(Boolean.valueOf(System.getProperty(SYSTEM_PROXY_ENABLED, Boolean.TRUE.toString())));
+            proxyService.setProxiesEnabled(false);
+            LOGGER.info("No proxy specified, disabled.");
+        } else {
+            proxyService.setSystemProxiesEnabled(false);
+            proxyService.setProxiesEnabled(true);
+            List<IProxyData> proxies = new ArrayList<>();
+            String initedProxyTypes = "";
+            if (isHttpProxyEnabled) {
+                try {
+                    IProxyData httpProxy = proxyService.getProxyData(IProxyData.HTTP_PROXY_TYPE);
+                    httpProxy.setHost(httpProxyHost);
+                    httpProxy.setPort(Integer.valueOf(httpProxyPort));
+                    if (StringUtils.isNotBlank(httpUser)) {
+                        httpProxy.setUserid(httpUser);
+                        if (httpPassword == null) {
+                            httpPassword = "";
+                        }
+                        httpProxy.setPassword(httpPassword);
+                    }
+                    proxies.add(httpProxy);
+                    initedProxyTypes += IProxyData.HTTP_PROXY_TYPE + " ";
+                } catch (Throwable e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+            }
+            if (isHttpsProxyEnabled) {
+                try {
+                    IProxyData httpsProxy = proxyService.getProxyData(IProxyData.HTTPS_PROXY_TYPE);
+                    httpsProxy.setHost(httpsProxyHost);
+                    httpsProxy.setPort(Integer.valueOf(httpsProxyPort));
+                    if (StringUtils.isNotBlank(httpsUser)) {
+                        httpsProxy.setUserid(httpsUser);
+                        if (httpsPassword == null) {
+                            httpsPassword = "";
+                        }
+                        httpsProxy.setPassword(httpsPassword);
+                    }
+                    proxies.add(httpsProxy);
+                    initedProxyTypes += IProxyData.HTTPS_PROXY_TYPE + " ";
+                } catch (Throwable e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+            }
+            if (isSocksProxyEnabled) {
+                try {
+                    IProxyData socksProxy = proxyService.getProxyData(IProxyData.SOCKS_PROXY_TYPE);
+                    socksProxy.setHost(socksProxyHost);
+                    socksProxy.setPort(Integer.valueOf(socksProxyPort));
+                    if (StringUtils.isNotBlank(socksProxyUser)) {
+                        socksProxy.setUserid(socksProxyUser);
+                        if (socksProxyPassword == null) {
+                            socksProxyPassword = "";
+                        }
+                        socksProxy.setPassword(socksProxyPassword);
+                    }
+                    proxies.add(socksProxy);
+                    initedProxyTypes += IProxyData.SOCKS_PROXY_TYPE;
+                } catch (Throwable e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+            }
+            proxyService.setProxyData(proxies.toArray(new IProxyData[0]));
+            List<String> nonProxyHosts = new ArrayList<>();
+            if (StringUtils.isNotBlank(httpNonProxyHosts)) {
+                String[] split = httpNonProxyHosts.split("|");
+                nonProxyHosts.addAll(Arrays.asList(split));
+            }
+            if (StringUtils.isNotBlank(httpsNonProxyHosts)) {
+                String[] split = httpsNonProxyHosts.split("|");
+                nonProxyHosts.addAll(Arrays.asList(split));
+            }
+            proxyService.setNonProxiedHosts(nonProxyHosts.toArray(new String[0]));
+
+            if (passwordMask.equals(System.getProperty("http.proxyPassword"))) {
+                System.setProperty("http.proxyPassword", httpPassword);
+            }
+            if (passwordMask.equals(System.getProperty("https.proxyPassword"))) {
+                System.setProperty("https.proxyPassword", httpsPassword);
+            }
+            if (passwordMask.equals(System.getProperty("socksProxyPassword"))) {
+                System.setProperty("socksProxyPassword", socksProxyPassword);
+            }
+
+            LOGGER.info("Succeed to init proxy: " + initedProxyTypes);
+        }
+    }
 
     public static boolean isNetworkValid() {
         return isNetworkValid(DEFAULT_TIMEOUT);

@@ -257,7 +257,11 @@ public class TacokitDatabaseConnectionImpl extends DatabaseConnectionImpl implem
      */
     @Override
     public String getDbmsId() {
-        return getDatabaseMappingFile();
+        String mappingFile = getDatabaseMappingFile();
+        if ("null".equals(mappingFile)) {
+            return null;
+        }
+        return mappingFile;
     }
 
     /**

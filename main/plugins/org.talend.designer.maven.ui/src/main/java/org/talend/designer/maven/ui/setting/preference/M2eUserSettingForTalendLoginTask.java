@@ -26,7 +26,9 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.maven.cli.configuration.SettingsXmlConfigurationProcessor;
 import org.apache.maven.settings.Profile;
 import org.apache.maven.settings.Proxy;
@@ -65,6 +67,8 @@ import org.w3c.dom.Node;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
+
+    private static final Logger LOGGER = Logger.getLogger(M2eUserSettingForTalendLoginTask.class);
 
     public static final String MAVEN_REPO_CONFIG = "maven.repository"; //$NON-NLS-1$
 
@@ -446,6 +450,8 @@ public class M2eUserSettingForTalendLoginTask extends AbstractLoginTask {
                 proxyService.setNonProxiedHosts(bypassHosts.toArray(new String[bypassHosts.size()]));
             }
         }
+
+        LOGGER.info("Updated studio proxy settings from maven settings.");
     }
 
     private boolean updateProfileSettings(IProgressMonitor monitor, IMaven maven, Settings settings, Path configPath,

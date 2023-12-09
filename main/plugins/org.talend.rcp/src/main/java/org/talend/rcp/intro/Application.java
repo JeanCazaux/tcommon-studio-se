@@ -171,6 +171,12 @@ public class Application implements IApplication {
                 EclipseCommandLine.updateOrCreateExitDataPropertyWithCommand(EclipseCommandLine.CLEAN, null, false);
                 return IApplication.EXIT_RELAUNCH;
             }
+            try {
+                NetworkUtil.applyProxyFromSystemProperties();
+            } catch (Throwable e) {
+                LOGGER.error("Failed to init proxy.", e);
+            }
+
             StudioSSLContextProvider.setSSLSystemProperty();
             HttpProxyUtil.initializeHttpProxy();
             TalendProxySelector.getInstance();

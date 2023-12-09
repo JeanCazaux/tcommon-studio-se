@@ -8,4 +8,13 @@
     </parent>
 	<artifactId>org.talend.designer.maven.repo.tcksdk</artifactId>
 	<packaging>eclipse-plugin</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.talend.studio</groupId>
+            <artifactId>org.talend.designer.maven.repo.tcksdk.prepare-repo</artifactId>
+            <version>${project.version}</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
 </project>
